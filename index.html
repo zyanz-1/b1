@@ -1,1792 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Mockup Baju Online</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WearLab 3D — Realistic Apparel Mockup</title>
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f1f3f6;
-    color: #222;
-}
-
-header {
-    background: #111827;
-    color: white;
-    padding: 18px 25px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 22px;
-}
-
-header p {
-    margin: 5px 0 0;
-    color: #cbd5e1;
-    font-size: 13px;
-}
-
-.app {
-    display: grid;
-    grid-template-columns: 310px 1fr 300px;
-    min-height: calc(100vh - 75px);
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
-.sidebar {
-    background: white;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    overflow-y: auto;
-}
-
-.sidebar.right {
-    border-right: none;
-    border-left: 1px solid #ddd;
-}
-
-.section {
-    margin-bottom: 25px;
-}
-
-.section-title {
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: #475569;
-}
-
-select,
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    outline: none;
-}
-
-input[type="color"] {
-    width: 100%;
-    height: 42px;
-    border: none;
-    padding: 2px;
-    cursor: pointer;
-    background: transparent;
-}
-
-input[type="range"] {
-    width: 100%;
-}
-
-.btn {
-    width: 100%;
-    border: none;
-    padding: 11px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 7px;
-}
-
-.btn-primary {
-    background: #2563eb;
-    color: white;
-}
-
-.btn-secondary {
-    background: #e2e8f0;
-    color: #1e293b;
-}
-
-.btn-danger {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.btn:hover {
-    opacity: 0.88;
-}
-
-/* =========================
-   CANVAS AREA
-========================= */
-
-.workspace {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    background:
-        linear-gradient(45deg, #e5e7eb 25%, transparent 25%),
-        linear-gradient(-45deg, #e5e7eb 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #e5e7eb 75%),
-        linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
-    background-size: 30px 30px;
-    background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
-}
-
-.canvas-container {
-    position: relative;
-    width: min(650px, 90%);
-    aspect-ratio: 1 / 1;
-    background: white;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-#mockupCanvas {
-    width: 100%;
-    height: 100%;
-}
-
-/* =========================
-   ELEMENT CONTROLS
-========================= */
-
-.control-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.element-list {
-    max-height: 250px;
-    overflow-y: auto;
-}
-
-.element-item {
-    padding: 10px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin-bottom: 7px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.element-item.active {
-    border-color: #2563eb;
-    background: #eff6ff;
-}
-
-.info {
-    background: #eff6ff;
-    padding: 10px;
-    border-radius: 8px;
-    color: #1e40af;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-/* Mobile */
-
-@media (max-width: 1000px) {
-    .app {
-        grid-template-columns: 250px 1fr;
-    }
-
-    .sidebar.right {
-        display: none;
-    }
-}
-
-@media (max-width: 700px) {
-    .app {
-        display: block;
-    }
-
-    .sidebar {
-        border-right: none;
-    }
-
-    .workspace {
-        min-height: 600px;
-        padding: 15px;
-    }
-}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:#0a0e14;color:#edf2f7;overflow:hidden}
+:root{--panel:#111720;--panel2:#171f2a;--line:#283343;--muted:#8e9aab;--accent:#638cff}
+.app{height:100%;display:grid;grid-template-rows:62px 1fr}
+.top{display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#0d1219;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px}.mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#6d9aff,#745cff);display:grid;place-items:center;font-weight:900}.brand b{font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.actions{display:flex;gap:7px}.btn{border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:12px}.btn.primary{background:var(--accent);border-color:var(--accent)}.btn:hover{filter:brightness(1.1)}
+.main{display:grid;grid-template-columns:250px 1fr 285px;min-height:0}
+.panel{background:var(--panel);padding:15px;overflow:auto}.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}
+h3{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 9px}.section{margin-bottom:21px}
+.models{display:grid;grid-template-columns:1fr 1fr;gap:7px}.model{border:1px solid var(--line);background:#151c26;color:#b9c4d2;border-radius:8px;padding:8px 4px;cursor:pointer;font-size:10px}.model.active{border-color:var(--accent);color:#fff;background:#17243b}.model .ico{font-size:25px;display:block;margin-bottom:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.field{margin:9px 0}.field label{font-size:10px;color:#aab5c4;display:flex;justify-content:space-between;margin-bottom:5px}.field input[type=color]{width:100%;height:34px;padding:2px;background:transparent;border:1px solid var(--line);border-radius:7px}.field input[type=text],.field select{width:100%;background:#0d131b;border:1px solid var(--line);color:#fff;border-radius:7px;padding:8px;outline:none}.field input[type=range]{width:100%}
+.upload{display:block;text-align:center;border:1px dashed #44546b;border-radius:7px;padding:10px;color:#aeb9c8;font-size:10px;cursor:pointer}.upload input{display:none}
+.tabs{display:flex;gap:4px;background:#0d131b;border:1px solid var(--line);padding:3px;border-radius:8px}.tabs button{flex:1;border:0;background:transparent;color:#8e9aab;padding:7px;border-radius:6px;font-size:10px;cursor:pointer}.tabs button.active{background:#283448;color:#fff}
+.stage{min-width:0;position:relative;background:radial-gradient(circle at 50% 38%,#596271 0,#252c35 37%,#151a21 72%,#0d1117 100%)}#scene{position:absolute;inset:0}.hint{position:absolute;left:50%;bottom:17px;transform:translateX(-50%);font-size:10px;color:#d7dde6;background:#0b1018aa;padding:7px 10px;border-radius:7px;border:1px solid #ffffff18;backdrop-filter:blur(5px);pointer-events:none}
+.layer{display:flex;gap:8px;align-items:center;background:#151c26;border:1px solid var(--line);padding:8px;border-radius:7px;margin-bottom:6px;font-size:10px;cursor:pointer}.layer.active{border-color:var(--accent);background:#18243a}.layer span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.empty{text-align:center;color:#647286;font-size:10px;line-height:1.6;padding:14px 4px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#101720;border:1px solid #354256;border-radius:8px;padding:9px 13px;font-size:11px;opacity:0;transition:.2s;pointer-events:none}#toast.show{opacity:1}
 </style>
 </head>
-
 <body>
-
-<header>
-    <h1>👕 Mockup Baju Online</h1>
-    <p>Desain baju, tambahkan logo, teks, warna, dan ekspor sebagai PNG.</p>
-</header>
-
 <div class="app">
-
-<!-- ======================================================
-     SIDEBAR KIRI
-====================================================== -->
-
-<aside class="sidebar">
-
-    <div class="section">
-
-        <div class="section-title">
-            Model Baju
-        </div>
-
-        <select id="shirtModel">
-
-            <option value="tshirt">
-                T-Shirt Lengan Pendek
-            </option>
-
-            <option value="longsleeve">
-                T-Shirt Lengan Panjang
-            </option>
-
-            <option value="jersey">
-                Jersey
-            </option>
-
-            <option value="polo">
-                Polo Shirt
-            </option>
-
-            <option value="hoodie">
-                Hoodie
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Warna Baju
-        </div>
-
-        <label>
-            Warna Badan
-        </label>
-
-        <input
-            type="color"
-            id="bodyColor"
-            value="#2563eb"
-        >
-
-        <label>
-            Warna Lengan
-        </label>
-
-        <input
-            type="color"
-            id="sleeveColor"
-            value="#1d4ed8"
-        >
-
-        <label>
-            Warna Kerah
-        </label>
-
-        <input
-            type="color"
-            id="collarColor"
-            value="#111827"
-        >
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Tambahkan Elemen
-        </div>
-
-        <button
-            class="btn btn-primary"
-            onclick="addText()"
-        >
-            ＋ Tambah Teks
-        </button>
-
-        <button
-            class="btn btn-secondary"
-            onclick="document.getElementById('logoInput').click()"
-        >
-            🖼 Upload Logo / Gambar
-        </button>
-
-        <input
-            type="file"
-            id="logoInput"
-            accept="image/*"
-            hidden
-        >
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Elemen Desain
-        </div>
-
-        <div
-            id="elementList"
-            class="element-list"
-        >
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            Export
-        </div>
-
-        <button
-            class="btn btn-primary"
-            onclick="downloadPNG()"
-        >
-            ⬇ Download PNG
-        </button>
-
-        <button
-            class="btn btn-secondary"
-            onclick="resetDesign()"
-        >
-            ↻ Reset Desain
-        </button>
-
-    </div>
-
-
-    <div class="info">
-
-        💡 <b>Tips</b><br>
-        Klik elemen pada mockup untuk memilihnya.
-        Elemen yang dipilih dapat dipindahkan dengan mouse.
-
-    </div>
-
+<header class="top">
+ <div class="brand"><div class="mark">W</div><div><b>WearLab 3D</b><small>Realistic Apparel Mockup Studio</small></div></div>
+ <div class="actions"><button class="btn" id="reset">Reset</button><button class="btn primary" id="png">Export PNG</button></div>
+</header>
+<div class="main">
+<aside class="panel left">
+ <div class="section"><h3>Model</h3><div class="models">
+  <button class="model active" data-model="polo"><span class="ico">👕</span>Realistic Polo</button>
+  <button class="model" data-model="tee"><span class="ico">👕</span>T-Shirt</button>
+  <button class="model" data-model="jersey"><span class="ico">🏃</span>Jersey</button>
+  <button class="model" data-model="long"><span class="ico">👕</span>Long Sleeve</button>
+ </div></div>
+ <div class="section"><h3>View</h3><div class="tabs"><button id="front" class="active">DEPAN</button><button id="back">BELAKANG</button></div></div>
+ <div class="section"><h3>Material</h3>
+  <div class="field"><label>Badan</label><input id="bodyColor" type="color" value="#151719"></div>
+  <div class="field"><label>Lengan</label><input id="sleeveColor" type="color" value="#111315"></div>
+  <div class="field"><label>Kerah / Aksen</label><input id="accentColor" type="color" value="#e24e3d"></div>
+  <div class="field"><label>Garis</label><input id="stripeColor" type="color" value="#e8e8e8"></div>
+ </div>
+ <div class="section"><h3>Desain</h3>
+  <div class="row"><button class="btn" id="addText">＋ Teks</button><button class="btn" id="addNumber">＋ Nomor</button></div>
+  <div style="height:7px"></div>
+  <label class="upload">＋ Upload Logo / Gambar<input id="logo" type="file" accept="image/*"></label>
+ </div>
+ <div class="section"><h3>Realism</h3>
+  <div class="field"><label>Fabric Roughness <span id="roughV">82%</span></label><input id="rough" type="range" min="40" max="100" value="82"></div>
+  <div class="field"><label>Fold Strength <span id="foldV">45%</span></label><input id="fold" type="range" min="0" max="100" value="45"></div>
+ </div>
 </aside>
 
-
-<!-- ======================================================
-     WORKSPACE
-====================================================== -->
-
-<main class="workspace">
-
-    <div class="canvas-container">
-
-        <svg
-            id="mockupCanvas"
-            viewBox="0 0 600 600"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-
-            <!-- Background -->
-
-            <rect
-                width="600"
-                height="600"
-                fill="#ffffff"
-            />
-
-
-            <!-- ==========================================
-                 SHIRT
-            =========================================== -->
-
-            <g id="shirt">
-
-                <!-- Shadow -->
-
-                <ellipse
-                    cx="300"
-                    cy="535"
-                    rx="170"
-                    ry="18"
-                    fill="#000000"
-                    opacity="0.12"
-                />
-
-
-                <!-- Left sleeve -->
-
-                <path
-                    id="leftSleeve"
-                    d="
-                    M205 150
-                    L100 205
-                    L145 320
-                    L220 270
-                    Z
-                    "
-                    fill="#1d4ed8"
-                    stroke="#111827"
-                    stroke-width="3"
-                />
-
-
-                <!-- Right sleeve -->
-
-                <path
-                    id="rightSleeve"
-                    d="
-                    M395 150
-                    L500 205
-                    L455 320
-                    L380 270
-                    Z
-                    "
-                    fill="#1d4ed8"
-                    stroke="#111827"
-                    stroke-width="3"
-                />
-
-
-                <!-- Body -->
-
-                <path
-                    id="shirtBody"
-                    d="
-                    M205 145
-                    L250 125
-                    L350 125
-                    L395 145
-                    L380 490
-                    L220 490
-                    Z
-                    "
-                    fill="#2563eb"
-                    stroke="#111827"
-                    stroke-width="3"
-                />
-
-
-                <!-- Collar -->
-
-                <path
-                    id="collar"
-                    d="
-                    M250 125
-                    Q300 175 350 125
-                    "
-                    fill="none"
-                    stroke="#111827"
-                    stroke-width="18"
-                    stroke-linecap="round"
-                />
-
-            </g>
-
-
-            <!-- ==========================================
-                 DESIGN ELEMENTS
-            =========================================== -->
-
-            <g id="designLayer"></g>
-
-        </svg>
-
-    </div>
-
-</main>
-
-
-<!-- ======================================================
-     RIGHT SIDEBAR
-====================================================== -->
-
-<aside class="sidebar right">
-
-    <div class="section">
-
-        <div class="section-title">
-            Properti Elemen
-        </div>
-
-        <div id="noSelection">
-
-            <p style="
-                font-size:13px;
-                color:#64748b;
-            ">
-                Pilih teks atau logo untuk mengatur
-                propertinya.
-            </p>
-
-        </div>
-
-
-        <div id="properties"
-             style="display:none;">
-
-            <label>
-                Ukuran
-            </label>
-
-            <input
-                type="range"
-                id="elementSize"
-                min="10"
-                max="200"
-                value="50"
-            >
-
-
-            <label>
-                Rotasi
-            </label>
-
-            <input
-                type="range"
-                id="elementRotation"
-                min="-180"
-                max="180"
-                value="0"
-            >
-
-
-            <label>
-                Posisi X
-            </label>
-
-            <input
-                type="range"
-                id="elementX"
-                min="50"
-                max="550"
-                value="300"
-            >
-
-
-            <label>
-                Posisi Y
-            </label>
-
-            <input
-                type="range"
-                id="elementY"
-                min="50"
-                max="500"
-                value="300"
-            >
-
-
-            <div
-                id="textProperties"
-                style="display:none;"
-            >
-
-                <label>
-                    Isi Teks
-                </label>
-
-                <input
-                    type="text"
-                    id="textValue"
-                    placeholder="Nama / tulisan"
-                >
-
-
-                <label>
-                    Warna Teks
-                </label>
-
-                <input
-                    type="color"
-                    id="textColor"
-                    value="#ffffff"
-                >
-
-            </div>
-
-
-            <button
-                class="btn btn-danger"
-                onclick="deleteSelected()"
-            >
-                🗑 Hapus Elemen
-            </button>
-
-        </div>
-
-    </div>
-
+<main class="stage"><div id="scene"></div><div class="hint">Drag untuk memutar • Scroll untuk zoom • Desain depan & belakang independen</div></main>
+
+<aside class="panel right">
+ <div class="section"><h3>Layers — <span id="sideName">Depan</span></h3><div id="layers"></div></div>
+ <div class="section" id="props" style="display:none"><h3>Properties</h3>
+   <div class="field"><label>Nama</label><input id="name" type="text"></div>
+   <div class="field"><label>Ukuran <span id="sizeV"></span></label><input id="size" type="range" min="20" max="260"></div>
+   <div class="field"><label>Posisi X <span id="xV"></span></label><input id="x" type="range" min="-1.4" max="1.4" step=".01"></div>
+   <div class="field"><label>Posisi Y <span id="yV"></span></label><input id="y" type="range" min="-2.0" max="2.2" step=".01"></div>
+   <div class="field"><label>Rotasi <span id="rV"></span></label><input id="rot" type="range" min="-180" max="180"></div>
+   <button class="btn" style="width:100%;color:#ff9693" id="del">Hapus Elemen</button>
+ </div>
+ <div class="section"><h3>Template Detail</h3><div class="empty">Model polo menggunakan kerah, placket, piping vertikal, material kasar, highlight dan bayangan 3D.</div></div>
 </aside>
-
-</div>
-
-
-<script>
-
-/* ======================================================
-   GLOBAL STATE
-====================================================== */
-
-const svg =
-    document.getElementById("mockupCanvas");
-
-const designLayer =
-    document.getElementById("designLayer");
-
-let elements = [];
-
-let selectedElement = null;
-
-let elementCounter = 0;
-
-
-/* ======================================================
-   SHIRT COLORS
-====================================================== */
-
-const bodyColor =
-    document.getElementById("bodyColor");
-
-const sleeveColor =
-    document.getElementById("sleeveColor");
-
-const collarColor =
-    document.getElementById("collarColor");
-
-
-bodyColor.addEventListener("input", () => {
-
-    document
-        .getElementById("shirtBody")
-        .setAttribute(
-            "fill",
-            bodyColor.value
-        );
-
-});
-
-
-sleeveColor.addEventListener("input", () => {
-
-    document
-        .getElementById("leftSleeve")
-        .setAttribute(
-            "fill",
-            sleeveColor.value
-        );
-
-    document
-        .getElementById("rightSleeve")
-        .setAttribute(
-            "fill",
-            sleeveColor.value
-        );
-
-});
-
-
-collarColor.addEventListener("input", () => {
-
-    document
-        .getElementById("collar")
-        .setAttribute(
-            "stroke",
-            collarColor.value
-        );
-
-});
-
-
-/* ======================================================
-   SHIRT MODEL
-====================================================== */
-
-document
-.getElementById("shirtModel")
-.addEventListener("change", function() {
-
-    const model = this.value;
-
-    const left =
-        document.getElementById("leftSleeve");
-
-    const right =
-        document.getElementById("rightSleeve");
-
-    const body =
-        document.getElementById("shirtBody");
-
-    const collar =
-        document.getElementById("collar");
-
-
-    /* Reset */
-
-    left.style.display = "";
-    right.style.display = "";
-
-    left.setAttribute(
-        "d",
-        `
-        M205 150
-        L100 205
-        L145 320
-        L220 270
-        Z
-        `
-    );
-
-    right.setAttribute(
-        "d",
-        `
-        M395 150
-        L500 205
-        L455 320
-        L380 270
-        Z
-        `
-    );
-
-
-    if (model === "tshirt") {
-
-        body.setAttribute(
-            "d",
-            `
-            M205 145
-            L250 125
-            L350 125
-            L395 145
-            L380 490
-            L220 490
-            Z
-            `
-        );
-
-        collar.setAttribute(
-            "stroke-width",
-            "18"
-        );
-
-    }
-
-
-    if (model === "longsleeve") {
-
-        left.setAttribute(
-            "d",
-            `
-            M205 150
-            L75 210
-            L110 390
-            L165 365
-            L145 270
-            L220 230
-            Z
-            `
-        );
-
-        right.setAttribute(
-            "d",
-            `
-            M395 150
-            L525 210
-            L490 390
-            L435 365
-            L455 270
-            L380 230
-            Z
-            `
-        );
-
-    }
-
-
-    if (model === "jersey") {
-
-        body.setAttribute(
-            "d",
-            `
-            M205 145
-            L250 125
-            L350 125
-            L395 145
-            L430 490
-            L170 490
-            Z
-            `
-        );
-
-        collar.setAttribute(
-            "stroke-width",
-            "12"
-        );
-
-    }
-
-
-    if (model === "polo") {
-
-        collar.setAttribute(
-            "stroke-width",
-            "10"
-        );
-
-        collar.setAttribute(
-            "d",
-            `
-            M250 125
-            L270 180
-            L300 145
-            L330 180
-            L350 125
-            `
-        );
-
-    }
-
-
-    if (model === "hoodie") {
-
-        body.setAttribute(
-            "d",
-            `
-            M205 145
-            L245 120
-            L355 120
-            L395 145
-            L410 490
-            L190 490
-            Z
-            `
-        );
-
-        collar.setAttribute(
-            "stroke-width",
-            "30"
-        );
-
-    }
-
-});
-
-
-/* ======================================================
-   ADD TEXT
-====================================================== */
-
-function addText() {
-
-    const id =
-        "text-" + (++elementCounter);
-
-    const text =
-        document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "text"
-        );
-
-    text.setAttribute(
-        "id",
-        id
-    );
-
-    text.setAttribute(
-        "x",
-        "300"
-    );
-
-    text.setAttribute(
-        "y",
-        "300"
-    );
-
-    text.setAttribute(
-        "fill",
-        "#ffffff"
-    );
-
-    text.setAttribute(
-        "font-size",
-        "50"
-    );
-
-    text.setAttribute(
-        "font-family",
-        "Arial"
-    );
-
-    text.setAttribute(
-        "font-weight",
-        "bold"
-    );
-
-    text.setAttribute(
-        "text-anchor",
-        "middle"
-    );
-
-    text.textContent =
-        "TEXT";
-
-    text.style.cursor =
-        "move";
-
-    designLayer.appendChild(text);
-
-
-    const obj = {
-
-        id: id,
-
-        type: "text",
-
-        x: 300,
-
-        y: 300,
-
-        size: 50,
-
-        rotation: 0
-
-    };
-
-
-    elements.push(obj);
-
-    selectElement(obj);
-
-    updateElementList();
-
+</div></div>
+<div id="toast"></div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+const $=id=>document.getElementById(id);
+const sceneEl=$('scene');
+let scene,camera,renderer,controls,garment,frontMesh,backMesh,frontCanvas,backCanvas,frontTex,backTex;
+let side='front', model='polo', selected=null, seq=0;
+const designs={front:[],back:[]};
+
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
+function color(id){return $(''+id).value}
+function hex(c){return new THREE.Color(c)}
+
+function makeCanvas(){
+ const c=document.createElement('canvas');c.width=1024;c.height=1365;return c;
 }
-
-
-/* ======================================================
-   UPLOAD LOGO
-====================================================== */
-
-document
-.getElementById("logoInput")
-.addEventListener(
-"change",
-function(event) {
-
-    const file =
-        event.target.files[0];
-
-    if (!file) return;
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload = function(e) {
-
-        const id =
-            "image-" + (++elementCounter);
-
-
-        const image =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "image"
-            );
-
-
-        image.setAttribute(
-            "id",
-            id
-        );
-
-        image.setAttribute(
-            "href",
-            e.target.result
-        );
-
-        image.setAttribute(
-            "x",
-            "250"
-        );
-
-        image.setAttribute(
-            "y",
-            "250"
-        );
-
-        image.setAttribute(
-            "width",
-            "100"
-        );
-
-        image.setAttribute(
-            "height",
-            "100"
-        );
-
-        image.style.cursor =
-            "move";
-
-
-        designLayer.appendChild(image);
-
-
-        const obj = {
-
-            id: id,
-
-            type: "image",
-
-            x: 250,
-
-            y: 250,
-
-            size: 100,
-
-            rotation: 0
-
-        };
-
-
-        elements.push(obj);
-
-        selectElement(obj);
-
-        updateElementList();
-
-    };
-
-
-    reader.readAsDataURL(file);
-
-});
-
-
-/* ======================================================
-   SELECT ELEMENT
-====================================================== */
-
-function selectElement(obj) {
-
-    selectedElement = obj;
-
-    document
-        .getElementById("noSelection")
-        .style.display = "none";
-
-    document
-        .getElementById("properties")
-        .style.display = "block";
-
-
-    document
-        .getElementById("elementSize")
-        .value = obj.size;
-
-
-    document
-        .getElementById("elementRotation")
-        .value = obj.rotation;
-
-
-    document
-        .getElementById("elementX")
-        .value = obj.x;
-
-
-    document
-        .getElementById("elementY")
-        .value = obj.y;
-
-
-    if (obj.type === "text") {
-
-        document
-            .getElementById("textProperties")
-            .style.display = "block";
-
-        const el =
-            document.getElementById(obj.id);
-
-        document
-            .getElementById("textValue")
-            .value =
-            el.textContent;
-
-        document
-            .getElementById("textColor")
-            .value =
-            el.getAttribute("fill");
-
-    }
-
-    else {
-
-        document
-            .getElementById("textProperties")
-            .style.display = "none";
-
-    }
-
-
-    updateElementList();
-
+frontCanvas=makeCanvas();backCanvas=makeCanvas();
+function clearCanvas(c){const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height)}
+function drawDesigns(c,list){
+ const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);
+ list.forEach(o=>{
+   x.save();
+   const px=(o.x/2.8+0.5)*c.width, py=(1-(o.y+2.1)/4.7)*c.height;
+   x.translate(px,py);x.rotate(o.rot*Math.PI/180);
+   if(o.type==='text'){x.fillStyle=o.color;x.font=`800 ${o.size}px Arial`;x.textAlign='center';x.textBaseline='middle';x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=5;x.fillText(o.text,0,0)}
+   else {x.globalAlpha=.98;x.drawImage(o.img,-o.size/2,-o.size/2,o.size,o.size)}
+   x.restore();
+ });
 }
-
-
-/* ======================================================
-   UPDATE ELEMENT
-====================================================== */
-
-function updateSelected() {
-
-    if (!selectedElement) return;
-
-    const obj =
-        selectedElement;
-
-
-    obj.size =
-        Number(
-            document
-            .getElementById("elementSize")
-            .value
-        );
-
-
-    obj.rotation =
-        Number(
-            document
-            .getElementById("elementRotation")
-            .value
-        );
-
-
-    obj.x =
-        Number(
-            document
-            .getElementById("elementX")
-            .value
-        );
-
-
-    obj.y =
-        Number(
-            document
-            .getElementById("elementY")
-            .value
-        );
-
-
-    const el =
-        document.getElementById(obj.id);
-
-
-    if (obj.type === "text") {
-
-        el.setAttribute(
-            "x",
-            obj.x
-        );
-
-        el.setAttribute(
-            "y",
-            obj.y
-        );
-
-        el.setAttribute(
-            "font-size",
-            obj.size
-        );
-
-        el.setAttribute(
-            "transform",
-            `rotate(
-                ${obj.rotation}
-                ${obj.x}
-                ${obj.y}
-            )`
-        );
-
-    }
-
-
-    if (obj.type === "image") {
-
-        el.setAttribute(
-            "x",
-            obj.x
-        );
-
-        el.setAttribute(
-            "y",
-            obj.y
-        );
-
-        el.setAttribute(
-            "width",
-            obj.size
-        );
-
-        el.setAttribute(
-            "height",
-            obj.size
-        );
-
-        const cx =
-            obj.x + obj.size / 2;
-
-        const cy =
-            obj.y + obj.size / 2;
-
-        el.setAttribute(
-            "transform",
-            `rotate(
-                ${obj.rotation}
-                ${cx}
-                ${cy}
-            )`
-        );
-
-    }
-
+function refreshTextures(){
+ drawDesigns(frontCanvas,designs.front);drawDesigns(backCanvas,designs.back);
+ frontTex.needsUpdate=true;backTex.needsUpdate=true;renderLayers();
 }
+function mat(col,rough=0.82){return new THREE.MeshStandardMaterial({color:hex(col),roughness:rough,metalness:0,fog:true})}
 
-
-/* ======================================================
-   PROPERTY EVENTS
-====================================================== */
-
-[
-    "elementSize",
-    "elementRotation",
-    "elementX",
-    "elementY"
-].forEach(id => {
-
-    document
-        .getElementById(id)
-        .addEventListener(
-            "input",
-            updateSelected
-        );
-
-});
-
-
-document
-.getElementById("textValue")
-.addEventListener(
-"input",
-function() {
-
-    if (!selectedElement) return;
-
-    if (
-        selectedElement.type !== "text"
-    ) return;
-
-
-    document
-        .getElementById(
-            selectedElement.id
-        )
-        .textContent =
-        this.value;
-
-    updateElementList();
-
-});
-
-
-document
-.getElementById("textColor")
-.addEventListener(
-"input",
-function() {
-
-    if (!selectedElement) return;
-
-    if (
-        selectedElement.type !== "text"
-    ) return;
-
-
-    document
-        .getElementById(
-            selectedElement.id
-        )
-        .setAttribute(
-            "fill",
-            this.value
-        );
-
-});
-
-
-/* ======================================================
-   CLICK ELEMENT
-====================================================== */
-
-designLayer.addEventListener(
-"click",
-function(e) {
-
-    const id =
-        e.target.id;
-
-    const obj =
-        elements.find(
-            x => x.id === id
-        );
-
-    if (obj) {
-
-        e.stopPropagation();
-
-        selectElement(obj);
-
-    }
-
-});
-
-
-/* ======================================================
-   ELEMENT LIST
-====================================================== */
-
-function updateElementList() {
-
-    const list =
-        document.getElementById(
-            "elementList"
-        );
-
-    list.innerHTML = "";
-
-
-    elements.forEach(obj => {
-
-        const item =
-            document.createElement("div");
-
-
-        item.className =
-            "element-item";
-
-
-        if (
-            selectedElement &&
-            selectedElement.id === obj.id
-        ) {
-
-            item.classList.add("active");
-
-        }
-
-
-        item.textContent =
-            obj.type === "text"
-            ? "🔤 Teks"
-            : "🖼 Logo";
-
-
-        item.onclick =
-            () => selectElement(obj);
-
-
-        list.appendChild(item);
-
-    });
-
+function roundedBox(w,h,d,r){
+ // bevel-like rounded box using ExtrudeGeometry
+ const s=new THREE.Shape();const x=-w/2,y=-h/2;
+ s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
+ const g=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelSegments:5,steps:1,bevelSize:.10,bevelThickness:.10});
+ g.center();return g;
 }
-
-
-/* ======================================================
-   DELETE
-====================================================== */
-
-function deleteSelected() {
-
-    if (!selectedElement)
-        return;
-
-
-    const el =
-        document.getElementById(
-            selectedElement.id
-        );
-
-
-    if (el)
-        el.remove();
-
-
-    elements =
-        elements.filter(
-            x =>
-            x.id !==
-            selectedElement.id
-        );
-
-
-    selectedElement =
-        null;
-
-
-    document
-        .getElementById("noSelection")
-        .style.display = "block";
-
-
-    document
-        .getElementById("properties")
-        .style.display = "none";
-
-
-    updateElementList();
-
+function makeGarment(){
+ if(garment)scene.remove(garment);
+ garment=new THREE.Group();
+ const body= new THREE.Mesh(roundedBox(model==='jersey'?3.7:3.45,4.9,.85,.28),mat(color('bodyColor')));
+ body.position.y=-.05; garment.add(body);
+ // sleeves
+ const sg=new THREE.CylinderGeometry(.58,.68,1.35,32,1,false);
+ const lm=new THREE.Mesh(sg,mat(color('sleeveColor')));lm.rotation.z=Math.PI/2;lm.position.set(-2.02,1.45,0);garment.add(lm);
+ const rm=lm.clone();rm.position.x=2.02;garment.add(rm);
+ // collar
+ const collar=new THREE.Mesh(new THREE.TorusGeometry(.70,.15,12,40,Math.PI*2),mat(color('accentColor'),.65));
+ collar.rotation.x=Math.PI/2;collar.scale.y=.72;collar.position.set(0,2.38,.47);garment.add(collar);
+ // placket
+ const pl=new THREE.Mesh(new THREE.BoxGeometry(.36,.82,.12),mat(color('accentColor'),.7));pl.position.set(0,1.95,.52);garment.add(pl);
+ for(let i=0;i<3;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(.055,12,8),mat('#f4f4f4',.45));b.position.set(0,2.24-i*.23,.61);garment.add(b)}
+ // stripes front/back as separate thin strips
+ [-.86,.86].forEach(x=>{
+   const f=new THREE.Mesh(new THREE.BoxGeometry(.075,4.25,.045),mat(color('stripeColor'),.65));f.position.set(x,-.03,.50);garment.add(f);
+   const b=f.clone();b.position.z=-.50;garment.add(b);
+ });
+ // shoulder accent
+ if(model==='jersey'||model==='tee'){ }
+ // texture planes
+ const pg=new THREE.PlaneGeometry(2.9,4.35,20,30);
+ frontMesh=new THREE.Mesh(pg,new THREE.MeshStandardMaterial({map:frontTex,transparent:true,roughness:.92,metalness:0}));
+ frontMesh.position.set(0,-.05,.505);garment.add(frontMesh);
+ backMesh=new THREE.Mesh(pg.clone(),new THREE.MeshStandardMaterial({map:backTex,transparent:true,roughness:.92,metalness:0,side:THREE.DoubleSide}));
+ backMesh.position.set(0,-.05,-.505);backMesh.rotation.y=Math.PI;garment.add(backMesh);
+ // slight cloth folds using translucent curves
+ addFoldLines(garment,1);addFoldLines(garment,-1);
+ scene.add(garment);
 }
-
-
-/* ======================================================
-   RESET
-====================================================== */
-
-function resetDesign() {
-
-    designLayer.innerHTML = "";
-
-    elements = [];
-
-    selectedElement = null;
-
-    elementCounter = 0;
-
-
-    bodyColor.value =
-        "#2563eb";
-
-    sleeveColor.value =
-        "#1d4ed8";
-
-    collarColor.value =
-        "#111827";
-
-
-    document
-        .getElementById("shirtBody")
-        .setAttribute(
-            "fill",
-            "#2563eb"
-        );
-
-
-    document
-        .getElementById("leftSleeve")
-        .setAttribute(
-            "fill",
-            "#1d4ed8"
-        );
-
-
-    document
-        .getElementById("rightSleeve")
-        .setAttribute(
-            "fill",
-            "#1d4ed8"
-        );
-
-
-    document
-        .getElementById("collar")
-        .setAttribute(
-            "stroke",
-            "#111827"
-        );
-
-
-    document
-        .getElementById("noSelection")
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById("properties")
-        .style.display =
-        "none";
-
-
-    updateElementList();
-
+function addFoldLines(g,sign){
+ for(let i=-2;i<=2;i++){
+   const pts=[];for(let j=0;j<=8;j++){const y=-2+j*.52;const z=.515*sign;const x=i*.52+Math.sin(j*.9+i)*.025;pts.push(new THREE.Vector3(x,y,z))}
+   const curve=new THREE.CatmullRomCurve3(pts);
+   const geo=new THREE.TubeGeometry(curve,16,.008,5,false);
+   const m=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.035});
+   g.add(new THREE.Mesh(geo,m));
+ }
 }
-
-
-/* ======================================================
-   DOWNLOAD PNG
-====================================================== */
-
-function downloadPNG() {
-
-    const serializer =
-        new XMLSerializer();
-
-
-    const source =
-        serializer.serializeToString(svg);
-
-
-    const svgBlob =
-        new Blob(
-            [source],
-            {
-                type:
-                "image/svg+xml;charset=utf-8"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(svgBlob);
-
-
-    const image =
-        new Image();
-
-
-    image.onload =
-    function() {
-
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
-
-
-        canvas.width = 1200;
-
-        canvas.height = 1200;
-
-
-        const ctx =
-            canvas.getContext("2d");
-
-
-        ctx.fillStyle =
-            "#ffffff";
-
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.drawImage(
-            image,
-            0,
-            0,
-            1200,
-            1200
-        );
-
-
-        URL.revokeObjectURL(url);
-
-
-        const link =
-            document.createElement("a");
-
-
-        link.download =
-            "mockup-baju.png";
-
-
-        link.href =
-            canvas.toDataURL(
-                "image/png"
-            );
-
-
-        link.click();
-
-    };
-
-
-    image.src = url;
-
+function init(){
+ scene=new THREE.Scene();scene.background=new THREE.Color('#171c23');scene.fog=new THREE.Fog('#171c23',9,17);
+ camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,1.2,8.8);
+ renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;sceneEl.appendChild(renderer.domElement);
+ controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,0,0);controls.minDistance=5.4;controls.maxDistance=12;controls.autoRotate=false;
+ const hemi=new THREE.HemisphereLight(0xffffff,0x202631,2.1);scene.add(hemi);
+ const key=new THREE.DirectionalLight(0xffffff,4.2);key.position.set(-4,7,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);scene.add(key);
+ const rim=new THREE.DirectionalLight(0x91b5ff,2.1);rim.position.set(5,4,-6);scene.add(rim);
+ const floor=new THREE.Mesh(new THREE.CircleGeometry(5,64),new THREE.MeshStandardMaterial({color:0x151a21,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-2.72;floor.receiveShadow=true;scene.add(floor);
+ frontTex=new THREE.CanvasTexture(frontCanvas);backTex=new THREE.CanvasTexture(backCanvas);frontTex.colorSpace=THREE.SRGBColorSpace;backTex.colorSpace=THREE.SRGBColorSpace;
+ makeGarment();resize();animate();
 }
+function resize(){const r=sceneEl.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+window.addEventListener('resize',resize);
 
-
-/* ======================================================
-   DRAG ELEMENT
-====================================================== */
-
-let dragging = false;
-
-let dragOffsetX = 0;
-
-let dragOffsetY = 0;
-
-
-svg.addEventListener(
-"mousedown",
-function(e) {
-
-    if (!selectedElement)
-        return;
-
-
-    if (
-        e.target.id !==
-        selectedElement.id
-    )
-        return;
-
-
-    dragging = true;
-
-
-    const point =
-        getSVGPoint(e);
-
-
-    dragOffsetX =
-        selectedElement.x -
-        point.x;
-
-
-    dragOffsetY =
-        selectedElement.y -
-        point.y;
-
-});
-
-
-svg.addEventListener(
-"mousemove",
-function(e) {
-
-    if (!dragging)
-        return;
-
-
-    if (!selectedElement)
-        return;
-
-
-    const point =
-        getSVGPoint(e);
-
-
-    selectedElement.x =
-        point.x +
-        dragOffsetX;
-
-
-    selectedElement.y =
-        point.y +
-        dragOffsetY;
-
-
-    document
-        .getElementById(
-            "elementX"
-        )
-        .value =
-        selectedElement.x;
-
-
-    document
-        .getElementById(
-            "elementY"
-        )
-        .value =
-        selectedElement.y;
-
-
-    updateSelected();
-
-});
-
-
-svg.addEventListener(
-"mouseup",
-function() {
-
-    dragging = false;
-
-});
-
-
-svg.addEventListener(
-"mouseleave",
-function() {
-
-    dragging = false;
-
-});
-
-
-function getSVGPoint(event) {
-
-    const pt =
-        svg.createSVGPoint();
-
-
-    pt.x =
-        event.clientX;
-
-    pt.y =
-        event.clientY;
-
-
-    const matrix =
-        svg
-        .getScreenCTM()
-        .inverse();
-
-
-    return pt.matrixTransform(
-        matrix
-    );
-
+function setSide(s){
+ side=s;selected=null;$('front').classList.toggle('active',s==='front');$('back').classList.toggle('active',s==='back');$('sideName').textContent=s==='front'?'Depan':'Belakang';
+ if(s==='front'){controls.target.set(0,0,0);garment.rotation.y=0}else garment.rotation.y=Math.PI;
+ renderLayers();sync();
 }
+$('front').onclick=()=>setSide('front');$('back').onclick=()=>setSide('back');
 
+document.querySelectorAll('.model').forEach(b=>b.onclick=()=>{document.querySelectorAll('.model').forEach(x=>x.classList.remove('active'));b.classList.add('active');model=b.dataset.model;makeGarment()});
+['bodyColor','sleeveColor','accentColor','stripeColor'].forEach(id=>$(id).oninput=()=>makeGarment());
+$('rough').oninput=()=>{$('roughV').textContent=$('rough').value+'%';scene.traverse(o=>{if(o.material&&'roughness'in o.material)o.material.roughness=+$('rough').value/100})};
+$('fold').oninput=()=>{$('foldV').textContent=$('fold').value+'%';toast('Fold strength diperbarui')};
 
-/* ======================================================
-   INITIAL
-====================================================== */
+function addText(){
+ const o={id:'e'+(++seq),type:'text',name:'Teks',text:'YOUR TEXT',x:0,y:.65,size:54,rot:0,color:'#ffffff'};designs[side].push(o);selected=o;refreshTextures();sync()
+}
+function addNumber(){
+ const o={id:'e'+(++seq),type:'text',name:'Nomor',text:'10',x:0,y:-.45,size:120,rot:0,color:'#ffffff'};designs[side].push(o);selected=o;refreshTextures();sync()
+}
+$('addText').onclick=addText;$('addNumber').onclick=addNumber;
+$('logo').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const o={id:'e'+(++seq),type:'image',name:f.name,img,x:0,y:.4,size:130,rot:0};designs[side].push(o);selected=o;refreshTextures();sync();toast('Logo ditambahkan')};img.src=r.result};r.readAsDataURL(f);e.target.value=''};
 
-updateElementList();
+function renderLayers(){
+ const box=$('layers');box.innerHTML='';
+ if(!designs[side].length){box.innerHTML='<div class="empty">Belum ada desain.<br>Tambahkan teks, nomor, atau logo.</div>';return}
+ [...designs[side]].reverse().forEach(o=>{const d=document.createElement('div');d.className='layer'+(selected?.id===o.id?' active':'');d.innerHTML=`<b>${o.type==='image'?'🖼':'T'}</b><span>${o.name}</span>`;d.onclick=()=>{selected=o;sync();renderLayers()};box.appendChild(d)})
+}
+function sync(){
+ $('props').style.display=selected?'block':'none';if(!selected)return;
+ $('name').value=selected.name;$('size').value=selected.size;$('x').value=selected.x;$('y').value=selected.y;$('rot').value=selected.rot;
+ $('sizeV').textContent=Math.round(selected.size);$('xV').textContent=selected.x.toFixed(2);$('yV').textContent=selected.y.toFixed(2);$('rV').textContent=selected.rot+'°';
+}
+function update(){
+ if(!selected)return;selected.name=$('name').value;selected.size=+$('size').value;selected.x=+$('x').value;selected.y=+$('y').value;selected.rot=+$('rot').value;
+ refreshTextures();sync()
+}
+['name','size','x','y','rot'].forEach(id=>$(id).oninput=update);
+$('del').onclick=()=>{if(!selected)return;designs[side]=designs[side].filter(x=>x.id!==selected.id);selected=null;refreshTextures();sync()};
 
+function reset(){designs.front=[];designs.back=[];selected=null;seq=0;side='front';garment.rotation.y=0;renderLayers();sync();refreshTextures();toast('Desain direset')}
+$('reset').onclick=reset;
+
+$('png').onclick=()=>{
+ renderer.render(scene,camera);
+ const a=document.createElement('a');a.download=`wearlab-3d-${side}.png`;a.href=renderer.domElement.toDataURL('image/png');a.click();toast('PNG diekspor')
+};
+
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}
+init();
 </script>
-
 </body>
 </html>
