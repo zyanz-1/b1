@@ -1,224 +1,332 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WearLab 3D — Realistic Apparel Mockup</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WearLab — 4 Sisi Apparel Designer</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:#0a0e14;color:#edf2f7;overflow:hidden}
-:root{--panel:#111720;--panel2:#171f2a;--line:#283343;--muted:#8e9aab;--accent:#638cff}
-.app{height:100%;display:grid;grid-template-rows:62px 1fr}
-.top{display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#0d1219;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px}.mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#6d9aff,#745cff);display:grid;place-items:center;font-weight:900}.brand b{font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.actions{display:flex;gap:7px}.btn{border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:12px}.btn.primary{background:var(--accent);border-color:var(--accent)}.btn:hover{filter:brightness(1.1)}
-.main{display:grid;grid-template-columns:250px 1fr 285px;min-height:0}
-.panel{background:var(--panel);padding:15px;overflow:auto}.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}
-h3{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 9px}.section{margin-bottom:21px}
-.models{display:grid;grid-template-columns:1fr 1fr;gap:7px}.model{border:1px solid var(--line);background:#151c26;color:#b9c4d2;border-radius:8px;padding:8px 4px;cursor:pointer;font-size:10px}.model.active{border-color:var(--accent);color:#fff;background:#17243b}.model .ico{font-size:25px;display:block;margin-bottom:4px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.field{margin:9px 0}.field label{font-size:10px;color:#aab5c4;display:flex;justify-content:space-between;margin-bottom:5px}.field input[type=color]{width:100%;height:34px;padding:2px;background:transparent;border:1px solid var(--line);border-radius:7px}.field input[type=text],.field select{width:100%;background:#0d131b;border:1px solid var(--line);color:#fff;border-radius:7px;padding:8px;outline:none}.field input[type=range]{width:100%}
-.upload{display:block;text-align:center;border:1px dashed #44546b;border-radius:7px;padding:10px;color:#aeb9c8;font-size:10px;cursor:pointer}.upload input{display:none}
-.tabs{display:flex;gap:4px;background:#0d131b;border:1px solid var(--line);padding:3px;border-radius:8px}.tabs button{flex:1;border:0;background:transparent;color:#8e9aab;padding:7px;border-radius:6px;font-size:10px;cursor:pointer}.tabs button.active{background:#283448;color:#fff}
-.stage{min-width:0;position:relative;background:radial-gradient(circle at 50% 38%,#596271 0,#252c35 37%,#151a21 72%,#0d1117 100%)}#scene{position:absolute;inset:0}.hint{position:absolute;left:50%;bottom:17px;transform:translateX(-50%);font-size:10px;color:#d7dde6;background:#0b1018aa;padding:7px 10px;border-radius:7px;border:1px solid #ffffff18;backdrop-filter:blur(5px);pointer-events:none}
-.layer{display:flex;gap:8px;align-items:center;background:#151c26;border:1px solid var(--line);padding:8px;border-radius:7px;margin-bottom:6px;font-size:10px;cursor:pointer}.layer.active{border-color:var(--accent);background:#18243a}.layer span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.empty{text-align:center;color:#647286;font-size:10px;line-height:1.6;padding:14px 4px}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#101720;border:1px solid #354256;border-radius:8px;padding:9px 13px;font-size:11px;opacity:0;transition:.2s;pointer-events:none}#toast.show{opacity:1}
+:root{
+  --bg:#0b0f14;--panel:#111720;--panel2:#171f2a;--line:#293546;
+  --text:#eef3f8;--muted:#8d9aaa;--accent:#5b8cff;--danger:#ef6461;
+  --stage:#e9edf2;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{height:100vh;display:grid;grid-template-rows:62px 1fr}
+.topbar{height:62px;background:#0d1219;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px}.brandIcon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#6d96ff,#7c5cff);display:grid;place-items:center;font-weight:900}.brand h1{font-size:15px;margin:0}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.topRight{display:flex;gap:7px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:8px;font-size:12px}.btn:hover{border-color:#4a5d77}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.danger{color:#ff9d9b}
+.layout{min-height:0;display:grid;grid-template-columns:255px 1fr 285px}
+.left,.right{background:var(--panel);overflow:auto;padding:15px}.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}
+.section{margin-bottom:22px}.sectionTitle{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.models{display:grid;grid-template-columns:1fr 1fr;gap:7px}.model{border:1px solid var(--line);background:#141b24;color:#cbd5e1;border-radius:8px;padding:8px 4px;text-align:center;font-size:10px}.model.active{background:#182744;border-color:var(--accent);color:white}.modelIcon{font-size:27px;height:35px;display:grid;place-items:center;margin-bottom:3px}
+.field{margin:9px 0}.field label{display:flex;justify-content:space-between;color:#aeb9c8;font-size:11px;margin-bottom:5px}.field input[type=color]{width:100%;height:35px;padding:2px;border:1px solid var(--line);border-radius:7px;background:transparent}.field input[type=text],.field input[type=number],.field select{width:100%;background:#0e141c;border:1px solid var(--line);border-radius:7px;color:white;padding:8px;outline:none}.field input[type=range]{width:100%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.upload{display:flex;align-items:center;justify-content:center;border:1px dashed #40516a;border-radius:7px;padding:9px;color:#aeb9c8;font-size:11px;min-height:38px}.upload input{display:none}
+.center{min-width:0;display:flex;flex-direction:column;background:var(--stage)}
+.viewbar{height:70px;background:#f5f7fa;border-bottom:1px solid #cdd4dd;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 12px}
+.viewBtn{position:relative;border:1px solid #d3d9e2;background:white;border-radius:8px;color:#596678;font-size:11px;display:flex;align-items:center;justify-content:center;gap:7px}.viewBtn.active{background:#18202b;color:#fff;border-color:#18202b}.viewBtn .dot{width:7px;height:7px;border-radius:50%;background:#aab5c2}.viewBtn.active .dot{background:#6e9aff}
+.canvas{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto;padding:30px;background-color:#e8ecf1;background-image:linear-gradient(45deg,#dce1e7 25%,transparent 25%),linear-gradient(-45deg,#dce1e7 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#dce1e7 75%),linear-gradient(-45deg,transparent 75%,#dce1e7 75%);background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0}
+.artboard{width:min(540px,72vw);height:min(650px,76vh);background:#fff;border-radius:10px;box-shadow:0 22px 65px rgba(0,0,0,.15);position:relative;overflow:hidden}
+.artboard svg{width:100%;height:100%;display:block}
+.stageInfo{height:34px;background:#f5f7fa;border-top:1px solid #ccd3dc;color:#667487;font-size:10px;display:flex;align-items:center;justify-content:center}
+.layers{display:flex;flex-direction:column;gap:6px}.layer{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);border-radius:7px;background:#151d27;color:#d7dee8;font-size:11px}.layer.active{border-color:var(--accent);background:#182744}.layerIcon{width:21px;text-align:center}.layerName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.empty{font-size:11px;color:#687689;text-align:center;line-height:1.5;padding:12px 3px}
+.check{display:flex;align-items:center;gap:7px;font-size:11px;color:#b9c4d1}.check input{accent-color:var(--accent)}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#101721;color:white;border:1px solid #344154;padding:10px 14px;border-radius:8px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:99}.show{opacity:1!important}
+@media(max-width:1050px){.layout{grid-template-columns:220px 1fr 250px}.viewbar{height:60px}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.left,.right{display:none}.center{height:calc(100vh - 62px)}.artboard{width:88vw;height:75vh}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top">
- <div class="brand"><div class="mark">W</div><div><b>WearLab 3D</b><small>Realistic Apparel Mockup Studio</small></div></div>
- <div class="actions"><button class="btn" id="reset">Reset</button><button class="btn primary" id="png">Export PNG</button></div>
+<header class="topbar">
+  <div class="brand"><div class="brandIcon">W</div><div><h1>WearLab</h1><small>4-Side Apparel Designer</small></div></div>
+  <div class="topRight">
+    <button class="btn" onclick="resetAll()">Reset</button>
+    <button class="btn primary" onclick="exportAll()">Export 4 Sisi</button>
+  </div>
 </header>
-<div class="main">
-<aside class="panel left">
- <div class="section"><h3>Model</h3><div class="models">
-  <button class="model active" data-model="polo"><span class="ico">👕</span>Realistic Polo</button>
-  <button class="model" data-model="tee"><span class="ico">👕</span>T-Shirt</button>
-  <button class="model" data-model="jersey"><span class="ico">🏃</span>Jersey</button>
-  <button class="model" data-model="long"><span class="ico">👕</span>Long Sleeve</button>
- </div></div>
- <div class="section"><h3>View</h3><div class="tabs"><button id="front" class="active">DEPAN</button><button id="back">BELAKANG</button></div></div>
- <div class="section"><h3>Material</h3>
-  <div class="field"><label>Badan</label><input id="bodyColor" type="color" value="#151719"></div>
-  <div class="field"><label>Lengan</label><input id="sleeveColor" type="color" value="#111315"></div>
-  <div class="field"><label>Kerah / Aksen</label><input id="accentColor" type="color" value="#e24e3d"></div>
-  <div class="field"><label>Garis</label><input id="stripeColor" type="color" value="#e8e8e8"></div>
- </div>
- <div class="section"><h3>Desain</h3>
-  <div class="row"><button class="btn" id="addText">＋ Teks</button><button class="btn" id="addNumber">＋ Nomor</button></div>
-  <div style="height:7px"></div>
-  <label class="upload">＋ Upload Logo / Gambar<input id="logo" type="file" accept="image/*"></label>
- </div>
- <div class="section"><h3>Realism</h3>
-  <div class="field"><label>Fabric Roughness <span id="roughV">82%</span></label><input id="rough" type="range" min="40" max="100" value="82"></div>
-  <div class="field"><label>Fold Strength <span id="foldV">45%</span></label><input id="fold" type="range" min="0" max="100" value="45"></div>
- </div>
+
+<div class="layout">
+<aside class="left">
+  <div class="section">
+    <div class="sectionTitle">Jenis Baju</div>
+    <div class="models">
+      <button class="model active" onclick="changeModel('tee',this)"><div class="modelIcon">👕</div>T-Shirt</button>
+      <button class="model" onclick="changeModel('polo',this)"><div class="modelIcon">👔</div>Polo</button>
+      <button class="model" onclick="changeModel('long',this)"><div class="modelIcon">👕</div>Long Sleeve</button>
+      <button class="model" onclick="changeModel('jersey',this)"><div class="modelIcon">🏃</div>Jersey</button>
+      <button class="model" onclick="changeModel('hoodie',this)"><div class="modelIcon">🧥</div>Hoodie</button>
+      <button class="model" onclick="changeModel('tank',this)"><div class="modelIcon">🎽</div>Tank Top</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Warna Baju</div>
+    <div class="field"><label>Badan</label><input id="bodyColor" type="color" value="#20252c" oninput="renderShirt()"></div>
+    <div class="field"><label>Lengan / sisi</label><input id="sleeveColor" type="color" value="#181c22" oninput="renderShirt()"></div>
+    <div class="field"><label>Kerah</label><input id="collarColor" type="color" value="#11151b" oninput="renderShirt()"></div>
+    <div class="field"><label>Garis aksen</label><input id="accentColor" type="color" value="#e84b4b" oninput="renderShirt()"></div>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Tambahkan Desain</div>
+    <div class="grid2">
+      <button class="btn" onclick="addText()">＋ Teks</button>
+      <label class="upload">＋ Logo<input id="imageInput" type="file" accept="image/*"></label>
+      <button class="btn" onclick="addNumber()">＋ Nomor</button>
+      <button class="btn" onclick="addStripe()">＋ Stripe</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Tampilan</div>
+    <label class="check"><input id="shadowToggle" type="checkbox" checked onchange="renderShirt()"> Bayangan kain</label>
+    <label class="check" style="margin-top:9px"><input id="seamToggle" type="checkbox" checked onchange="renderShirt()"> Jahitan / detail</label>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Petunjuk</div>
+    <div class="empty">Pilih salah satu dari 4 sisi di atas. Tambahkan logo atau teks, lalu drag langsung pada baju untuk memindahkannya.</div>
+  </div>
 </aside>
 
-<main class="stage"><div id="scene"></div><div class="hint">Drag untuk memutar • Scroll untuk zoom • Desain depan & belakang independen</div></main>
+<main class="center">
+  <div class="viewbar">
+    <button class="viewBtn active" id="vFront" onclick="setView('front')"><span class="dot"></span>DEPAN</button>
+    <button class="viewBtn" id="vBack" onclick="setView('back')"><span class="dot"></span>BELAKANG</button>
+    <button class="viewBtn" id="vLeft" onclick="setView('left')"><span class="dot"></span>SISI KIRI</button>
+    <button class="viewBtn" id="vRight" onclick="setView('right')"><span class="dot"></span>SISI KANAN</button>
+  </div>
 
-<aside class="panel right">
- <div class="section"><h3>Layers — <span id="sideName">Depan</span></h3><div id="layers"></div></div>
- <div class="section" id="props" style="display:none"><h3>Properties</h3>
-   <div class="field"><label>Nama</label><input id="name" type="text"></div>
-   <div class="field"><label>Ukuran <span id="sizeV"></span></label><input id="size" type="range" min="20" max="260"></div>
-   <div class="field"><label>Posisi X <span id="xV"></span></label><input id="x" type="range" min="-1.4" max="1.4" step=".01"></div>
-   <div class="field"><label>Posisi Y <span id="yV"></span></label><input id="y" type="range" min="-2.0" max="2.2" step=".01"></div>
-   <div class="field"><label>Rotasi <span id="rV"></span></label><input id="rot" type="range" min="-180" max="180"></div>
-   <button class="btn" style="width:100%;color:#ff9693" id="del">Hapus Elemen</button>
- </div>
- <div class="section"><h3>Template Detail</h3><div class="empty">Model polo menggunakan kerah, placket, piping vertikal, material kasar, highlight dan bayangan 3D.</div></div>
+  <div class="canvas">
+    <div class="artboard">
+      <svg id="svg" viewBox="0 0 600 750" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="shadow"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-opacity=".16"/></filter>
+          <linearGradient id="cloth" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".16" stop-color="#fff" stop-opacity=".035"/><stop offset=".55" stop-color="#fff" stop-opacity=".015"/><stop offset="1" stop-color="#000" stop-opacity=".13"/></linearGradient>
+        </defs>
+        <rect width="600" height="750" fill="#fff"/>
+        <ellipse id="groundShadow" cx="300" cy="675" rx="185" ry="22" fill="#000" opacity=".10"/>
+        <g id="shirtGroup" filter="url(#shadow)"></g>
+        <g id="designLayer"></g>
+        <g id="seamLayer"></g>
+      </svg>
+    </div>
+  </div>
+  <div class="stageInfo"><span id="viewLabel">DEPAN</span>&nbsp; • &nbsp;<span id="modelLabel">T-SHIRT</span></div>
+</main>
+
+<aside class="right">
+  <div class="section">
+    <div class="sectionTitle">Layer — <span id="sideLabel">Depan</span></div>
+    <div id="layers" class="layers"></div>
+  </div>
+
+  <div class="section" id="props" style="display:none">
+    <div class="sectionTitle">Properti Elemen</div>
+    <div class="field"><label>Nama</label><input id="pName" type="text" oninput="updateSelected()"></div>
+    <div class="field"><label>Ukuran <span id="pSizeVal"></span></label><input id="pSize" type="range" min="10" max="240" oninput="updateSelected()"></div>
+    <div class="field"><label>Posisi X <span id="pXVal"></span></label><input id="pX" type="range" min="20" max="580" oninput="updateSelected()"></div>
+    <div class="field"><label>Posisi Y <span id="pYVal"></span></label><input id="pY" type="range" min="40" max="690" oninput="updateSelected()"></div>
+    <div class="field"><label>Rotasi <span id="pRVal"></span></label><input id="pR" type="range" min="-180" max="180" oninput="updateSelected()"></div>
+    <div class="field" id="colorField"><label>Warna elemen</label><input id="pColor" type="color" value="#ffffff" oninput="updateSelected()"></div>
+    <button class="btn danger" style="width:100%" onclick="deleteSelected()">Hapus Elemen</button>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Ringkasan 4 Sisi</div>
+    <div class="grid2">
+      <button class="btn" onclick="setView('front')">Depan</button>
+      <button class="btn" onclick="setView('back')">Belakang</button>
+      <button class="btn" onclick="setView('left')">Kiri</button>
+      <button class="btn" onclick="setView('right')">Kanan</button>
+    </div>
+  </div>
 </aside>
-</div></div>
+</div>
+</div>
 <div id="toast"></div>
 
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
-
+<script>
+const NS="http://www.w3.org/2000/svg";
 const $=id=>document.getElementById(id);
-const sceneEl=$('scene');
-let scene,camera,renderer,controls,garment,frontMesh,backMesh,frontCanvas,backCanvas,frontTex,backTex;
-let side='front', model='polo', selected=null, seq=0;
-const designs={front:[],back:[]};
+let model="tee", view="front", selected=null, seq=0, dragging=false;
+const sides=["front","back","left","right"];
+const designs={front:[],back:[],left:[],right:[]};
 
-function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
-function color(id){return $(''+id).value}
-function hex(c){return new THREE.Color(c)}
+function toast(t){const x=$("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1400)}
+function sideName(){return {front:"Depan",back:"Belakang",left:"Sisi Kiri",right:"Sisi Kanan"}[view]}
 
-function makeCanvas(){
- const c=document.createElement('canvas');c.width=1024;c.height=1365;return c;
+function setView(v){
+  view=v;selected=null;
+  ["front","back","left","right"].forEach(s=>$("v"+s[0].toUpperCase()+s.slice(1)).classList.toggle("active",s===v));
+  $("viewLabel").textContent=sideName().toUpperCase();$("sideLabel").textContent=sideName();
+  renderDesigns();renderLayers();syncProps();
 }
-frontCanvas=makeCanvas();backCanvas=makeCanvas();
-function clearCanvas(c){const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height)}
-function drawDesigns(c,list){
- const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);
- list.forEach(o=>{
-   x.save();
-   const px=(o.x/2.8+0.5)*c.width, py=(1-(o.y+2.1)/4.7)*c.height;
-   x.translate(px,py);x.rotate(o.rot*Math.PI/180);
-   if(o.type==='text'){x.fillStyle=o.color;x.font=`800 ${o.size}px Arial`;x.textAlign='center';x.textBaseline='middle';x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=5;x.fillText(o.text,0,0)}
-   else {x.globalAlpha=.98;x.drawImage(o.img,-o.size/2,-o.size/2,o.size,o.size)}
-   x.restore();
- });
-}
-function refreshTextures(){
- drawDesigns(frontCanvas,designs.front);drawDesigns(backCanvas,designs.back);
- frontTex.needsUpdate=true;backTex.needsUpdate=true;renderLayers();
-}
-function mat(col,rough=0.82){return new THREE.MeshStandardMaterial({color:hex(col),roughness:rough,metalness:0,fog:true})}
 
-function roundedBox(w,h,d,r){
- // bevel-like rounded box using ExtrudeGeometry
- const s=new THREE.Shape();const x=-w/2,y=-h/2;
- s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
- const g=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelSegments:5,steps:1,bevelSize:.10,bevelThickness:.10});
- g.center();return g;
+function changeModel(m,btn){
+  model=m;document.querySelectorAll(".model").forEach(x=>x.classList.remove("active"));btn.classList.add("active");
+  $("modelLabel").textContent=({tee:"T-SHIRT",polo:"POLO",long:"LONG SLEEVE",jersey:"JERSEY",hoodie:"HOODIE",tank:"TANK TOP"})[m];
+  renderShirt();
 }
-function makeGarment(){
- if(garment)scene.remove(garment);
- garment=new THREE.Group();
- const body= new THREE.Mesh(roundedBox(model==='jersey'?3.7:3.45,4.9,.85,.28),mat(color('bodyColor')));
- body.position.y=-.05; garment.add(body);
- // sleeves
- const sg=new THREE.CylinderGeometry(.58,.68,1.35,32,1,false);
- const lm=new THREE.Mesh(sg,mat(color('sleeveColor')));lm.rotation.z=Math.PI/2;lm.position.set(-2.02,1.45,0);garment.add(lm);
- const rm=lm.clone();rm.position.x=2.02;garment.add(rm);
- // collar
- const collar=new THREE.Mesh(new THREE.TorusGeometry(.70,.15,12,40,Math.PI*2),mat(color('accentColor'),.65));
- collar.rotation.x=Math.PI/2;collar.scale.y=.72;collar.position.set(0,2.38,.47);garment.add(collar);
- // placket
- const pl=new THREE.Mesh(new THREE.BoxGeometry(.36,.82,.12),mat(color('accentColor'),.7));pl.position.set(0,1.95,.52);garment.add(pl);
- for(let i=0;i<3;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(.055,12,8),mat('#f4f4f4',.45));b.position.set(0,2.24-i*.23,.61);garment.add(b)}
- // stripes front/back as separate thin strips
- [-.86,.86].forEach(x=>{
-   const f=new THREE.Mesh(new THREE.BoxGeometry(.075,4.25,.045),mat(color('stripeColor'),.65));f.position.set(x,-.03,.50);garment.add(f);
-   const b=f.clone();b.position.z=-.50;garment.add(b);
- });
- // shoulder accent
- if(model==='jersey'||model==='tee'){ }
- // texture planes
- const pg=new THREE.PlaneGeometry(2.9,4.35,20,30);
- frontMesh=new THREE.Mesh(pg,new THREE.MeshStandardMaterial({map:frontTex,transparent:true,roughness:.92,metalness:0}));
- frontMesh.position.set(0,-.05,.505);garment.add(frontMesh);
- backMesh=new THREE.Mesh(pg.clone(),new THREE.MeshStandardMaterial({map:backTex,transparent:true,roughness:.92,metalness:0,side:THREE.DoubleSide}));
- backMesh.position.set(0,-.05,-.505);backMesh.rotation.y=Math.PI;garment.add(backMesh);
- // slight cloth folds using translucent curves
- addFoldLines(garment,1);addFoldLines(garment,-1);
- scene.add(garment);
-}
-function addFoldLines(g,sign){
- for(let i=-2;i<=2;i++){
-   const pts=[];for(let j=0;j<=8;j++){const y=-2+j*.52;const z=.515*sign;const x=i*.52+Math.sin(j*.9+i)*.025;pts.push(new THREE.Vector3(x,y,z))}
-   const curve=new THREE.CatmullRomCurve3(pts);
-   const geo=new THREE.TubeGeometry(curve,16,.008,5,false);
-   const m=new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.035});
-   g.add(new THREE.Mesh(geo,m));
- }
-}
-function init(){
- scene=new THREE.Scene();scene.background=new THREE.Color('#171c23');scene.fog=new THREE.Fog('#171c23',9,17);
- camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,1.2,8.8);
- renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;sceneEl.appendChild(renderer.domElement);
- controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,0,0);controls.minDistance=5.4;controls.maxDistance=12;controls.autoRotate=false;
- const hemi=new THREE.HemisphereLight(0xffffff,0x202631,2.1);scene.add(hemi);
- const key=new THREE.DirectionalLight(0xffffff,4.2);key.position.set(-4,7,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);scene.add(key);
- const rim=new THREE.DirectionalLight(0x91b5ff,2.1);rim.position.set(5,4,-6);scene.add(rim);
- const floor=new THREE.Mesh(new THREE.CircleGeometry(5,64),new THREE.MeshStandardMaterial({color:0x151a21,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-2.72;floor.receiveShadow=true;scene.add(floor);
- frontTex=new THREE.CanvasTexture(frontCanvas);backTex=new THREE.CanvasTexture(backCanvas);frontTex.colorSpace=THREE.SRGBColorSpace;backTex.colorSpace=THREE.SRGBColorSpace;
- makeGarment();resize();animate();
-}
-function resize(){const r=sceneEl.getBoundingClientRect();renderer.setSize(r.width,r.height);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
-window.addEventListener('resize',resize);
 
-function setSide(s){
- side=s;selected=null;$('front').classList.toggle('active',s==='front');$('back').classList.toggle('active',s==='back');$('sideName').textContent=s==='front'?'Depan':'Belakang';
- if(s==='front'){controls.target.set(0,0,0);garment.rotation.y=0}else garment.rotation.y=Math.PI;
- renderLayers();sync();
+function path(parent,tag,attrs){
+  const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);parent.appendChild(e);return e;
 }
-$('front').onclick=()=>setSide('front');$('back').onclick=()=>setSide('back');
 
-document.querySelectorAll('.model').forEach(b=>b.onclick=()=>{document.querySelectorAll('.model').forEach(x=>x.classList.remove('active'));b.classList.add('active');model=b.dataset.model;makeGarment()});
-['bodyColor','sleeveColor','accentColor','stripeColor'].forEach(id=>$(id).oninput=()=>makeGarment());
-$('rough').oninput=()=>{$('roughV').textContent=$('rough').value+'%';scene.traverse(o=>{if(o.material&&'roughness'in o.material)o.material.roughness=+$('rough').value/100})};
-$('fold').oninput=()=>{$('foldV').textContent=$('fold').value+'%';toast('Fold strength diperbarui')};
+function renderShirt(){
+  const g=$("shirtGroup"),seam=$("seamLayer");g.innerHTML="";seam.innerHTML="";
+  const body=$("bodyColor").value,sleeve=$("sleeveColor").value,collar=$("collarColor").value,accent=$("accentColor").value;
+  const shadow=$("shadowToggle").checked, seams=$("seamToggle").checked;
+  $("groundShadow").setAttribute("opacity",shadow?".10":"0");
+  const fill=(d)=>path(g,"path",{d,fill:body,stroke:"#171b21","stroke-width":"3"});
+  const sleeve=(d)=>path(g,"path",{d,fill:sleeve,stroke:"#171b21","stroke-width":"3"});
+  const line=(d,color=collar,w=10)=>path(g,"path",{d,fill:"none",stroke:color,"stroke-width":w,"stroke-linecap":"round","stroke-linejoin":"round"});
+  const detail=(d,color="#fff",w=2,dash="")=>path(seam,"path",{d,fill:"none",stroke:color,"stroke-width":w,"stroke-linecap":"round",...(dash?{"stroke-dasharray":dash}:{})});
+
+  if(view==="front"||view==="back"){
+    if(model==="tee"){
+      sleeve("M205 145 L85 210 L125 335 L220 270 Z");sleeve("M395 145 L515 210 L475 335 L380 270 Z");
+      fill("M205 140 L250 115 L350 115 L395 140 L385 650 Q300 670 215 650 Z");line("M250 120 Q300 175 350 120",collar,15);
+    }else if(model==="polo"){
+      sleeve("M205 145 L85 210 L125 335 L220 270 Z");sleeve("M395 145 L515 210 L475 335 L380 270 Z");
+      fill("M205 140 L250 115 L350 115 L395 140 L385 650 Q300 670 215 650 Z");line("M250 120 Q300 168 350 120",collar,13);
+      if(view==="front"){path(g,"path",{d:"M300 125 L300 220",stroke:collar,"stroke-width":"5"});path(g,"circle",{cx:300,cy:145,r:4,fill:accent});path(g,"circle",{cx:300,cy:170,r:4,fill:accent});}
+    }else if(model==="long"){
+      sleeve("M205 145 L65 220 L100 450 L165 420 L145 270 L220 225 Z");sleeve("M395 145 L535 220 L500 450 L435 420 L455 270 L380 225 Z");
+      fill("M205 140 L250 115 L350 115 L395 140 L385 650 Q300 670 215 650 Z");line("M250 120 Q300 175 350 120",collar,15);
+    }else if(model==="jersey"){
+      sleeve("M205 145 L70 210 L120 355 L220 280 Z");sleeve("M395 145 L530 210 L480 355 L380 280 Z");
+      fill("M205 140 L250 115 L350 115 L395 140 L425 650 Q300 675 175 650 Z");line("M250 120 Q300 160 350 120",collar,10);
+      path(g,"path",{d:"M175 275 L425 275",stroke:accent,"stroke-width":"9",opacity:".9"});
+    }else if(model==="hoodie"){
+      sleeve("M205 150 L65 225 L115 415 L175 380 L150 275 L220 230 Z");sleeve("M395 150 L535 225 L485 415 L425 380 L450 275 L380 230 Z");
+      fill("M205 145 L245 105 L355 105 L395 145 L415 650 Q300 680 185 650 Z");line("M245 110 Q300 220 355 110",collar,27);
+      if(view==="front")path(g,"path",{d:"M300 165 L300 235",stroke:accent,"stroke-width":"3"});
+    }else{
+      fill("M205 140 L250 115 L350 115 L395 140 L375 650 Q300 670 225 650 Z");line("M250 120 Q300 175 350 120",collar,13);
+    }
+    // vertical accent piping
+    if(view==="front"||view==="back"){
+      detail("M195 160 L190 620",accent,4);detail("M215 155 L210 625",accent,2);
+      detail("M405 160 L410 620",accent,4);detail("M385 155 L390 625",accent,2);
+    }
+    if(seams){detail("M220 645 Q300 660 380 645","#777",1,"5 5");detail("M205 145 L220 270","#777",1,"4 4");detail("M395 145 L380 270","#777",1,"4 4");}
+  }else{
+    // side views — simplified silhouette inspired by the supplied reference
+    if(model==="long"||model==="hoodie"){
+      fill(view==="left"?"M250 120 Q205 145 185 205 L185 625 Q220 650 285 645 L300 150 Z":"M350 120 Q395 145 415 205 L415 625 Q380 650 315 645 L300 150 Z");
+      if(view==="left")sleeve("M250 145 Q185 170 150 250 L175 365 L220 340 L215 230 L285 175 Z");
+      else sleeve("M350 145 Q415 170 450 250 L425 365 L380 340 L385 230 L315 175 Z");
+    }else{
+      fill(view==="left"?"M265 120 Q215 145 190 205 L190 630 Q235 650 300 645 L300 150 Z":"M335 120 Q385 145 410 205 L410 630 Q365 650 300 645 L300 150 Z");
+      if(model!=="tank"){
+        if(view==="left")sleeve("M265 145 Q215 170 175 245 L190 340 L230 330 L225 230 L285 175 Z");
+        else sleeve("M335 145 Q385 170 425 245 L410 340 L370 330 L375 230 L315 175 Z");
+      }
+    }
+    line("M285 125 Q300 145 315 125",collar,10);
+    if(seams){detail(view==="left"?"M195 210 L195 610":"M405 210 L405 610","#777",1,"5 5")}
+  }
+  renderDesigns();
+}
 
 function addText(){
- const o={id:'e'+(++seq),type:'text',name:'Teks',text:'YOUR TEXT',x:0,y:.65,size:54,rot:0,color:'#ffffff'};designs[side].push(o);selected=o;refreshTextures();sync()
+  const o={id:"e"+(++seq),type:"text",name:"Teks",x:300,y:350,size:45,rot:0,color:"#fff",text:"YOUR TEXT"};
+  designs[view].push(o);selected=o;renderDesigns();renderLayers();syncProps();
 }
 function addNumber(){
- const o={id:'e'+(++seq),type:'text',name:'Nomor',text:'10',x:0,y:-.45,size:120,rot:0,color:'#ffffff'};designs[side].push(o);selected=o;refreshTextures();sync()
+  const o={id:"e"+(++seq),type:"text",name:"Nomor",x:300,y:450,size:110,rot:0,color:"#fff",text:"10"};
+  designs[view].push(o);selected=o;renderDesigns();renderLayers();syncProps();
 }
-$('addText').onclick=addText;$('addNumber').onclick=addNumber;
-$('logo').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const o={id:'e'+(++seq),type:'image',name:f.name,img,x:0,y:.4,size:130,rot:0};designs[side].push(o);selected=o;refreshTextures();sync();toast('Logo ditambahkan')};img.src=r.result};r.readAsDataURL(f);e.target.value=''};
+function addStripe(){
+  const o={id:"e"+(++seq),type:"stripe",name:"Stripe",x:300,y:330,size:110,rot:0,color:$("accentColor").value};
+  designs[view].push(o);selected=o;renderDesigns();renderLayers();syncProps();
+}
+$("imageInput").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>{
+    const o={id:"e"+(++seq),type:"image",name:f.name,x:300,y:300,size:120,rot:0,src:r.result};
+    designs[view].push(o);selected=o;renderDesigns();renderLayers();syncProps();toast("Logo ditambahkan");
+  };r.readAsDataURL(f);e.target.value="";
+});
 
+function renderDesigns(){
+  const dl=$("designLayer");dl.innerHTML="";
+  designs[view].forEach(o=>{
+    let e;
+    if(o.type==="text"){
+      e=path(dl,"text",{x:o.x,y:o.y,"font-size":o.size,"font-family":"Arial, sans-serif","font-weight":"800","text-anchor":"middle",fill:o.color,transform:`rotate(${o.rot} ${o.x} ${o.y})`});e.textContent=o.text;
+    }else if(o.type==="image"){
+      e=path(dl,"image",{href:o.src,x:o.x-o.size/2,y:o.y-o.size/2,width:o.size,height:o.size,preserveAspectRatio:"xMidYMid meet",transform:`rotate(${o.rot} ${o.x} ${o.y})`});
+    }else{
+      e=path(dl,"rect",{x:95,y:o.y-o.size/10,width:410,height:o.size/5,rx:5,fill:o.color,opacity:".88",transform:`rotate(${o.rot} 300 ${o.y})`});
+    }
+    e.dataset.id=o.id;e.style.cursor="move";e.addEventListener("mousedown",ev=>{ev.stopPropagation();selected=o;syncProps();renderLayers()});
+  });
+}
 function renderLayers(){
- const box=$('layers');box.innerHTML='';
- if(!designs[side].length){box.innerHTML='<div class="empty">Belum ada desain.<br>Tambahkan teks, nomor, atau logo.</div>';return}
- [...designs[side]].reverse().forEach(o=>{const d=document.createElement('div');d.className='layer'+(selected?.id===o.id?' active':'');d.innerHTML=`<b>${o.type==='image'?'🖼':'T'}</b><span>${o.name}</span>`;d.onclick=()=>{selected=o;sync();renderLayers()};box.appendChild(d)})
+  const b=$("layers");b.innerHTML="";
+  if(!designs[view].length){b.innerHTML='<div class="empty">Belum ada elemen pada sisi ini.</div>';return}
+  [...designs[view]].reverse().forEach(o=>{
+    const d=document.createElement("div");d.className="layer"+(selected?.id===o.id?" active":"");
+    d.innerHTML=`<div class="layerIcon">${o.type==="image"?"🖼":o.type==="stripe"?"▰":"T"}</div><div class="layerName">${o.name}</div>`;
+    d.onclick=()=>{selected=o;syncProps();renderLayers()};b.appendChild(d);
+  });
 }
-function sync(){
- $('props').style.display=selected?'block':'none';if(!selected)return;
- $('name').value=selected.name;$('size').value=selected.size;$('x').value=selected.x;$('y').value=selected.y;$('rot').value=selected.rot;
- $('sizeV').textContent=Math.round(selected.size);$('xV').textContent=selected.x.toFixed(2);$('yV').textContent=selected.y.toFixed(2);$('rV').textContent=selected.rot+'°';
+function syncProps(){
+  $("props").style.display=selected?"block":"none";if(!selected)return;
+  $("pName").value=selected.name;$("pSize").value=selected.size;$("pX").value=selected.x;$("pY").value=selected.y;$("pR").value=selected.rot;
+  $("pSizeVal").textContent=selected.size;$("pXVal").textContent=Math.round(selected.x);$("pYVal").textContent=Math.round(selected.y);$("pRVal").textContent=selected.rot+"°";
+  $("colorField").style.display=selected.type==="image"?"none":"block";if(selected.type!=="image")$("pColor").value=selected.color;
 }
-function update(){
- if(!selected)return;selected.name=$('name').value;selected.size=+$('size').value;selected.x=+$('x').value;selected.y=+$('y').value;selected.rot=+$('rot').value;
- refreshTextures();sync()
+function updateSelected(){
+  if(!selected)return;
+  selected.name=$("pName").value;selected.size=+$("pSize").value;selected.x=+$("pX").value;selected.y=+$("pY").value;selected.rot=+$("pR").value;
+  if(selected.type!=="image")selected.color=$("pColor").value;
+  if(selected.type==="text")selected.text=selected.name==="Nomor"?"10":selected.name;
+  renderDesigns();renderLayers();syncProps();
 }
-['name','size','x','y','rot'].forEach(id=>$(id).oninput=update);
-$('del').onclick=()=>{if(!selected)return;designs[side]=designs[side].filter(x=>x.id!==selected.id);selected=null;refreshTextures();sync()};
+function deleteSelected(){if(!selected)return;designs[view]=designs[view].filter(x=>x.id!==selected.id);selected=null;renderDesigns();renderLayers();syncProps()}
 
-function reset(){designs.front=[];designs.back=[];selected=null;seq=0;side='front';garment.rotation.y=0;renderLayers();sync();refreshTextures();toast('Desain direset')}
-$('reset').onclick=reset;
+function point(e){
+  const r=$("svg").getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width*600,y:(e.clientY-r.top)/r.height*750};
+}
+$("svg").addEventListener("mousedown",e=>{if(selected&&e.target.dataset.id===selected.id)dragging=true});
+window.addEventListener("mousemove",e=>{
+  if(!dragging||!selected)return;
+  const p=point(e);selected.x=Math.max(20,Math.min(580,p.x));selected.y=Math.max(40,Math.min(690,p.y));renderDesigns();syncProps();
+});
+window.addEventListener("mouseup",()=>dragging=false);
 
-$('png').onclick=()=>{
- renderer.render(scene,camera);
- const a=document.createElement('a');a.download=`wearlab-3d-${side}.png`;a.href=renderer.domElement.toDataURL('image/png');a.click();toast('PNG diekspor')
-};
+function resetAll(){
+  sides.forEach(s=>designs[s]=[]);selected=null;seq=0;model="tee";
+  $("bodyColor").value="#20252c";$("sleeveColor").value="#181c22";$("collarColor").value="#11151b";$("accentColor").value="#e84b4b";
+  document.querySelectorAll(".model").forEach(x=>x.classList.remove("active"));document.querySelector(".model").classList.add("active");
+  setView("front");renderShirt();toast("Semua desain direset");
+}
 
-function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}
-init();
+function svgToData(){
+  const clone=$("svg").cloneNode(true);clone.setAttribute("xmlns","http://www.w3.org/2000/svg");
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(new XMLSerializer().serializeToString(clone));
+}
+function exportAll(){
+  // Generate a 2x2 contact sheet of the four sides.
+  const imgs=[];let loaded=0;
+  sides.forEach((s,i)=>{
+    const old=view;view=s;renderDesigns();const src=svgToData();view=old;renderDesigns();
+    const im=new Image();im.onload=()=>{imgs[i]=im;if(++loaded===4){
+      const c=document.createElement("canvas");c.width=1200;c.height=1500;const ctx=c.getContext("2d");ctx.fillStyle="#f2f4f7";ctx.fillRect(0,0,c.width,c.height);
+      [[0,0],[600,0],[0,750],[600,750]].forEach((p,j)=>{ctx.fillStyle="#fff";ctx.fillRect(p[0]+20,p[1]+20,560,710);ctx.drawImage(imgs[j],p[0]+30,p[1]+30,540,675)});
+      const a=document.createElement("a");a.download="wearlab-4-sisi.png";a.href=c.toDataURL("image/png");a.click();toast("4 sisi berhasil diekspor");renderDesigns();
+    }};im.src=src;
+  });
+}
+
+renderShirt();renderLayers();
 </script>
 </body>
 </html>
