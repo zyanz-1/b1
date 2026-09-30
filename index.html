@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mockup Baju Online</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f3f6;
+    color: #222;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 18px 25px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header p {
+    margin: 5px 0 0;
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 310px 1fr 300px;
+    min-height: calc(100vh - 75px);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.sidebar.right {
+    border-right: none;
+    border-left: 1px solid #ddd;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #475569;
+}
+
+select,
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+}
+
+input[type="color"] {
+    width: 100%;
+    height: 42px;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    background: transparent;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    padding: 11px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.btn:hover {
+    opacity: 0.88;
+}
+
+/* =========================
+   CANVAS AREA
+========================= */
+
+.workspace {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background:
+        linear-gradient(45deg, #e5e7eb 25%, transparent 25%),
+        linear-gradient(-45deg, #e5e7eb 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e5e7eb 75%),
+        linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+    background-size: 30px 30px;
+    background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+}
+
+.canvas-container {
+    position: relative;
+    width: min(650px, 90%);
+    aspect-ratio: 1 / 1;
+    background: white;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#mockupCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================
+   ELEMENT CONTROLS
+========================= */
+
+.control-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.element-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.element-item {
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.element-item.active {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.info {
+    background: #eff6ff;
+    padding: 10px;
+    border-radius: 8px;
+    color: #1e40af;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Mobile */
+
+@media (max-width: 1000px) {
+    .app {
+        grid-template-columns: 250px 1fr;
+    }
+
+    .sidebar.right {
+        display: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .app {
+        display: block;
+    }
+
+    .sidebar {
+        border-right: none;
+    }
+
+    .workspace {
+        min-height: 600px;
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>👕 Mockup Baju Online</h1>
+    <p>Desain baju, tambahkan logo, teks, warna, dan ekspor sebagai PNG.</p>
+</header>
+
+<div class="app">
+
+<!-- ======================================================
+     SIDEBAR KIRI
+====================================================== -->
+
+<aside class="sidebar">
+
+    <div class="section">
+
+        <div class="section-title">
+            Model Baju
+        </div>
+
+        <select id="shirtModel">
+
+            <option value="tshirt">
+                T-Shirt Lengan Pendek
+            </option>
+
+            <option value="longsleeve">
+                T-Shirt Lengan Panjang
+            </option>
+
+            <option value="jersey">
+                Jersey
+            </option>
+
+            <option value="polo">
+                Polo Shirt
+            </option>
+
+            <option value="hoodie">
+                Hoodie
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Warna Baju
+        </div>
+
+        <label>
+            Warna Badan
+        </label>
+
+        <input
+            type="color"
+            id="bodyColor"
+            value="#2563eb"
+        >
+
+        <label>
+            Warna Lengan
+        </label>
+
+        <input
+            type="color"
+            id="sleeveColor"
+            value="#1d4ed8"
+        >
+
+        <label>
+            Warna Kerah
+        </label>
+
+        <input
+            type="color"
+            id="collarColor"
+            value="#111827"
+        >
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Tambahkan Elemen
+        </div>
+
+        <button
+            class="btn btn-primary"
+            onclick="addText()"
+        >
+            ＋ Tambah Teks
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            onclick="document.getElementById('logoInput').click()"
+        >
+            🖼 Upload Logo / Gambar
+        </button>
+
+        <input
+            type="file"
+            id="logoInput"
+            accept="image/*"
+            hidden
+        >
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Elemen Desain
+        </div>
+
+        <div
+            id="elementList"
+            class="element-list"
+        >
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Export
+        </div>
+
+        <button
+            class="btn btn-primary"
+            onclick="downloadPNG()"
+        >
+            ⬇ Download PNG
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            onclick="resetDesign()"
+        >
+            ↻ Reset Desain
+        </button>
+
+    </div>
+
+
+    <div class="info">
+
+        💡 <b>Tips</b><br>
+        Klik elemen pada mockup untuk memilihnya.
+        Elemen yang dipilih dapat dipindahkan dengan mouse.
+
+    </div>
+
+</aside>
+
+
+<!-- ======================================================
+     WORKSPACE
+====================================================== -->
+
+<main class="workspace">
+
+    <div class="canvas-container">
+
+        <svg
+            id="mockupCanvas"
+            viewBox="0 0 600 600"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <!-- Background -->
+
+            <rect
+                width="600"
+                height="600"
+                fill="#ffffff"
+            />
+
+
+            <!-- ==========================================
+                 SHIRT
+            =========================================== -->
+
+            <g id="shirt">
+
+                <!-- Shadow -->
+
+                <ellipse
+                    cx="300"
+                    cy="535"
+                    rx="170"
+                    ry="18"
+                    fill="#000000"
+                    opacity="0.12"
+                />
+
+
+                <!-- Left sleeve -->
+
+                <path
+                    id="leftSleeve"
+                    d="
+                    M205 150
+                    L100 205
+                    L145 320
+                    L220 270
+                    Z
+                    "
+                    fill="#1d4ed8"
+                    stroke="#111827"
+                    stroke-width="3"
+                />
+
+
+                <!-- Right sleeve -->
+
+                <path
+                    id="rightSleeve"
+                    d="
+                    M395 150
+                    L500 205
+                    L455 320
+                    L380 270
+                    Z
+                    "
+                    fill="#1d4ed8"
+                    stroke="#111827"
+                    stroke-width="3"
+                />
+
+
+                <!-- Body -->
+
+                <path
+                    id="shirtBody"
+                    d="
+                    M205 145
+                    L250 125
+                    L350 125
+                    L395 145
+                    L380 490
+                    L220 490
+                    Z
+                    "
+                    fill="#2563eb"
+                    stroke="#111827"
+                    stroke-width="3"
+                />
+
+
+                <!-- Collar -->
+
+                <path
+                    id="collar"
+                    d="
+                    M250 125
+                    Q300 175 350 125
+                    "
+                    fill="none"
+                    stroke="#111827"
+                    stroke-width="18"
+                    stroke-linecap="round"
+                />
+
+            </g>
+
+
+            <!-- ==========================================
+                 DESIGN ELEMENTS
+            =========================================== -->
+
+            <g id="designLayer"></g>
+
+        </svg>
+
+    </div>
+
+</main>
+
+
+<!-- ======================================================
+     RIGHT SIDEBAR
+====================================================== -->
+
+<aside class="sidebar right">
+
+    <div class="section">
+
+        <div class="section-title">
+            Properti Elemen
+        </div>
+
+        <div id="noSelection">
+
+            <p style="
+                font-size:13px;
+                color:#64748b;
+            ">
+                Pilih teks atau logo untuk mengatur
+                propertinya.
+            </p>
+
+        </div>
+
+
+        <div id="properties"
+             style="display:none;">
+
+            <label>
+                Ukuran
+            </label>
+
+            <input
+                type="range"
+                id="elementSize"
+                min="10"
+                max="200"
+                value="50"
+            >
+
+
+            <label>
+                Rotasi
+            </label>
+
+            <input
+                type="range"
+                id="elementRotation"
+                min="-180"
+                max="180"
+                value="0"
+            >
+
+
+            <label>
+                Posisi X
+            </label>
+
+            <input
+                type="range"
+                id="elementX"
+                min="50"
+                max="550"
+                value="300"
+            >
+
+
+            <label>
+                Posisi Y
+            </label>
+
+            <input
+                type="range"
+                id="elementY"
+                min="50"
+                max="500"
+                value="300"
+            >
+
+
+            <div
+                id="textProperties"
+                style="display:none;"
+            >
+
+                <label>
+                    Isi Teks
+                </label>
+
+                <input
+                    type="text"
+                    id="textValue"
+                    placeholder="Nama / tulisan"
+                >
+
+
+                <label>
+                    Warna Teks
+                </label>
+
+                <input
+                    type="color"
+                    id="textColor"
+                    value="#ffffff"
+                >
+
+            </div>
+
+
+            <button
+                class="btn btn-danger"
+                onclick="deleteSelected()"
+            >
+                🗑 Hapus Elemen
+            </button>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</div>
+
+
+<script>
+
+/* ======================================================
+   GLOBAL STATE
+====================================================== */
+
+const svg =
+    document.getElementById("mockupCanvas");
+
+const designLayer =
+    document.getElementById("designLayer");
+
+let elements = [];
+
+let selectedElement = null;
+
+let elementCounter = 0;
+
+
+/* ======================================================
+   SHIRT COLORS
+====================================================== */
+
+const bodyColor =
+    document.getElementById("bodyColor");
+
+const sleeveColor =
+    document.getElementById("sleeveColor");
+
+const collarColor =
+    document.getElementById("collarColor");
+
+
+bodyColor.addEventListener("input", () => {
+
+    document
+        .getElementById("shirtBody")
+        .setAttribute(
+            "fill",
+            bodyColor.value
+        );
+
+});
+
+
+sleeveColor.addEventListener("input", () => {
+
+    document
+        .getElementById("leftSleeve")
+        .setAttribute(
+            "fill",
+            sleeveColor.value
+        );
+
+    document
+        .getElementById("rightSleeve")
+        .setAttribute(
+            "fill",
+            sleeveColor.value
+        );
+
+});
+
+
+collarColor.addEventListener("input", () => {
+
+    document
+        .getElementById("collar")
+        .setAttribute(
+            "stroke",
+            collarColor.value
+        );
+
+});
+
+
+/* ======================================================
+   SHIRT MODEL
+====================================================== */
+
+document
+.getElementById("shirtModel")
+.addEventListener("change", function() {
+
+    const model = this.value;
+
+    const left =
+        document.getElementById("leftSleeve");
+
+    const right =
+        document.getElementById("rightSleeve");
+
+    const body =
+        document.getElementById("shirtBody");
+
+    const collar =
+        document.getElementById("collar");
+
+
+    /* Reset */
+
+    left.style.display = "";
+    right.style.display = "";
+
+    left.setAttribute(
+        "d",
+        `
+        M205 150
+        L100 205
+        L145 320
+        L220 270
+        Z
+        `
+    );
+
+    right.setAttribute(
+        "d",
+        `
+        M395 150
+        L500 205
+        L455 320
+        L380 270
+        Z
+        `
+    );
+
+
+    if (model === "tshirt") {
+
+        body.setAttribute(
+            "d",
+            `
+            M205 145
+            L250 125
+            L350 125
+            L395 145
+            L380 490
+            L220 490
+            Z
+            `
+        );
+
+        collar.setAttribute(
+            "stroke-width",
+            "18"
+        );
+
+    }
+
+
+    if (model === "longsleeve") {
+
+        left.setAttribute(
+            "d",
+            `
+            M205 150
+            L75 210
+            L110 390
+            L165 365
+            L145 270
+            L220 230
+            Z
+            `
+        );
+
+        right.setAttribute(
+            "d",
+            `
+            M395 150
+            L525 210
+            L490 390
+            L435 365
+            L455 270
+            L380 230
+            Z
+            `
+        );
+
+    }
+
+
+    if (model === "jersey") {
+
+        body.setAttribute(
+            "d",
+            `
+            M205 145
+            L250 125
+            L350 125
+            L395 145
+            L430 490
+            L170 490
+            Z
+            `
+        );
+
+        collar.setAttribute(
+            "stroke-width",
+            "12"
+        );
+
+    }
+
+
+    if (model === "polo") {
+
+        collar.setAttribute(
+            "stroke-width",
+            "10"
+        );
+
+        collar.setAttribute(
+            "d",
+            `
+            M250 125
+            L270 180
+            L300 145
+            L330 180
+            L350 125
+            `
+        );
+
+    }
+
+
+    if (model === "hoodie") {
+
+        body.setAttribute(
+            "d",
+            `
+            M205 145
+            L245 120
+            L355 120
+            L395 145
+            L410 490
+            L190 490
+            Z
+            `
+        );
+
+        collar.setAttribute(
+            "stroke-width",
+            "30"
+        );
+
+    }
+
+});
+
+
+/* ======================================================
+   ADD TEXT
+====================================================== */
+
+function addText() {
+
+    const id =
+        "text-" + (++elementCounter);
+
+    const text =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+    text.setAttribute(
+        "id",
+        id
+    );
+
+    text.setAttribute(
+        "x",
+        "300"
+    );
+
+    text.setAttribute(
+        "y",
+        "300"
+    );
+
+    text.setAttribute(
+        "fill",
+        "#ffffff"
+    );
+
+    text.setAttribute(
+        "font-size",
+        "50"
+    );
+
+    text.setAttribute(
+        "font-family",
+        "Arial"
+    );
+
+    text.setAttribute(
+        "font-weight",
+        "bold"
+    );
+
+    text.setAttribute(
+        "text-anchor",
+        "middle"
+    );
+
+    text.textContent =
+        "TEXT";
+
+    text.style.cursor =
+        "move";
+
+    designLayer.appendChild(text);
+
+
+    const obj = {
+
+        id: id,
+
+        type: "text",
+
+        x: 300,
+
+        y: 300,
+
+        size: 50,
+
+        rotation: 0
+
+    };
+
+
+    elements.push(obj);
+
+    selectElement(obj);
+
+    updateElementList();
+
+}
+
+
+/* ======================================================
+   UPLOAD LOGO
+====================================================== */
+
+document
+.getElementById("logoInput")
+.addEventListener(
+"change",
+function(event) {
+
+    const file =
+        event.target.files[0];
+
+    if (!file) return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e) {
+
+        const id =
+            "image-" + (++elementCounter);
+
+
+        const image =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "image"
+            );
+
+
+        image.setAttribute(
+            "id",
+            id
+        );
+
+        image.setAttribute(
+            "href",
+            e.target.result
+        );
+
+        image.setAttribute(
+            "x",
+            "250"
+        );
+
+        image.setAttribute(
+            "y",
+            "250"
+        );
+
+        image.setAttribute(
+            "width",
+            "100"
+        );
+
+        image.setAttribute(
+            "height",
+            "100"
+        );
+
+        image.style.cursor =
+            "move";
+
+
+        designLayer.appendChild(image);
+
+
+        const obj = {
+
+            id: id,
+
+            type: "image",
+
+            x: 250,
+
+            y: 250,
+
+            size: 100,
+
+            rotation: 0
+
+        };
+
+
+        elements.push(obj);
+
+        selectElement(obj);
+
+        updateElementList();
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* ======================================================
+   SELECT ELEMENT
+====================================================== */
+
+function selectElement(obj) {
+
+    selectedElement = obj;
+
+    document
+        .getElementById("noSelection")
+        .style.display = "none";
+
+    document
+        .getElementById("properties")
+        .style.display = "block";
+
+
+    document
+        .getElementById("elementSize")
+        .value = obj.size;
+
+
+    document
+        .getElementById("elementRotation")
+        .value = obj.rotation;
+
+
+    document
+        .getElementById("elementX")
+        .value = obj.x;
+
+
+    document
+        .getElementById("elementY")
+        .value = obj.y;
+
+
+    if (obj.type === "text") {
+
+        document
+            .getElementById("textProperties")
+            .style.display = "block";
+
+        const el =
+            document.getElementById(obj.id);
+
+        document
+            .getElementById("textValue")
+            .value =
+            el.textContent;
+
+        document
+            .getElementById("textColor")
+            .value =
+            el.getAttribute("fill");
+
+    }
+
+    else {
+
+        document
+            .getElementById("textProperties")
+            .style.display = "none";
+
+    }
+
+
+    updateElementList();
+
+}
+
+
+/* ======================================================
+   UPDATE ELEMENT
+====================================================== */
+
+function updateSelected() {
+
+    if (!selectedElement) return;
+
+    const obj =
+        selectedElement;
+
+
+    obj.size =
+        Number(
+            document
+            .getElementById("elementSize")
+            .value
+        );
+
+
+    obj.rotation =
+        Number(
+            document
+            .getElementById("elementRotation")
+            .value
+        );
+
+
+    obj.x =
+        Number(
+            document
+            .getElementById("elementX")
+            .value
+        );
+
+
+    obj.y =
+        Number(
+            document
+            .getElementById("elementY")
+            .value
+        );
+
+
+    const el =
+        document.getElementById(obj.id);
+
+
+    if (obj.type === "text") {
+
+        el.setAttribute(
+            "x",
+            obj.x
+        );
+
+        el.setAttribute(
+            "y",
+            obj.y
+        );
+
+        el.setAttribute(
+            "font-size",
+            obj.size
+        );
+
+        el.setAttribute(
+            "transform",
+            `rotate(
+                ${obj.rotation}
+                ${obj.x}
+                ${obj.y}
+            )`
+        );
+
+    }
+
+
+    if (obj.type === "image") {
+
+        el.setAttribute(
+            "x",
+            obj.x
+        );
+
+        el.setAttribute(
+            "y",
+            obj.y
+        );
+
+        el.setAttribute(
+            "width",
+            obj.size
+        );
+
+        el.setAttribute(
+            "height",
+            obj.size
+        );
+
+        const cx =
+            obj.x + obj.size / 2;
+
+        const cy =
+            obj.y + obj.size / 2;
+
+        el.setAttribute(
+            "transform",
+            `rotate(
+                ${obj.rotation}
+                ${cx}
+                ${cy}
+            )`
+        );
+
+    }
+
+}
+
+
+/* ======================================================
+   PROPERTY EVENTS
+====================================================== */
+
+[
+    "elementSize",
+    "elementRotation",
+    "elementX",
+    "elementY"
+].forEach(id => {
+
+    document
+        .getElementById(id)
+        .addEventListener(
+            "input",
+            updateSelected
+        );
+
+});
+
+
+document
+.getElementById("textValue")
+.addEventListener(
+"input",
+function() {
+
+    if (!selectedElement) return;
+
+    if (
+        selectedElement.type !== "text"
+    ) return;
+
+
+    document
+        .getElementById(
+            selectedElement.id
+        )
+        .textContent =
+        this.value;
+
+    updateElementList();
+
+});
+
+
+document
+.getElementById("textColor")
+.addEventListener(
+"input",
+function() {
+
+    if (!selectedElement) return;
+
+    if (
+        selectedElement.type !== "text"
+    ) return;
+
+
+    document
+        .getElementById(
+            selectedElement.id
+        )
+        .setAttribute(
+            "fill",
+            this.value
+        );
+
+});
+
+
+/* ======================================================
+   CLICK ELEMENT
+====================================================== */
+
+designLayer.addEventListener(
+"click",
+function(e) {
+
+    const id =
+        e.target.id;
+
+    const obj =
+        elements.find(
+            x => x.id === id
+        );
+
+    if (obj) {
+
+        e.stopPropagation();
+
+        selectElement(obj);
+
+    }
+
+});
+
+
+/* ======================================================
+   ELEMENT LIST
+====================================================== */
+
+function updateElementList() {
+
+    const list =
+        document.getElementById(
+            "elementList"
+        );
+
+    list.innerHTML = "";
+
+
+    elements.forEach(obj => {
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "element-item";
+
+
+        if (
+            selectedElement &&
+            selectedElement.id === obj.id
+        ) {
+
+            item.classList.add("active");
+
+        }
+
+
+        item.textContent =
+            obj.type === "text"
+            ? "🔤 Teks"
+            : "🖼 Logo";
+
+
+        item.onclick =
+            () => selectElement(obj);
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* ======================================================
+   DELETE
+====================================================== */
+
+function deleteSelected() {
+
+    if (!selectedElement)
+        return;
+
+
+    const el =
+        document.getElementById(
+            selectedElement.id
+        );
+
+
+    if (el)
+        el.remove();
+
+
+    elements =
+        elements.filter(
+            x =>
+            x.id !==
+            selectedElement.id
+        );
+
+
+    selectedElement =
+        null;
+
+
+    document
+        .getElementById("noSelection")
+        .style.display = "block";
+
+
+    document
+        .getElementById("properties")
+        .style.display = "none";
+
+
+    updateElementList();
+
+}
+
+
+/* ======================================================
+   RESET
+====================================================== */
+
+function resetDesign() {
+
+    designLayer.innerHTML = "";
+
+    elements = [];
+
+    selectedElement = null;
+
+    elementCounter = 0;
+
+
+    bodyColor.value =
+        "#2563eb";
+
+    sleeveColor.value =
+        "#1d4ed8";
+
+    collarColor.value =
+        "#111827";
+
+
+    document
+        .getElementById("shirtBody")
+        .setAttribute(
+            "fill",
+            "#2563eb"
+        );
+
+
+    document
+        .getElementById("leftSleeve")
+        .setAttribute(
+            "fill",
+            "#1d4ed8"
+        );
+
+
+    document
+        .getElementById("rightSleeve")
+        .setAttribute(
+            "fill",
+            "#1d4ed8"
+        );
+
+
+    document
+        .getElementById("collar")
+        .setAttribute(
+            "stroke",
+            "#111827"
+        );
+
+
+    document
+        .getElementById("noSelection")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("properties")
+        .style.display =
+        "none";
+
+
+    updateElementList();
+
+}
+
+
+/* ======================================================
+   DOWNLOAD PNG
+====================================================== */
+
+function downloadPNG() {
+
+    const serializer =
+        new XMLSerializer();
+
+
+    const source =
+        serializer.serializeToString(svg);
+
+
+    const svgBlob =
+        new Blob(
+            [source],
+            {
+                type:
+                "image/svg+xml;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(svgBlob);
+
+
+    const image =
+        new Image();
+
+
+    image.onload =
+    function() {
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        canvas.width = 1200;
+
+        canvas.height = 1200;
+
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        ctx.drawImage(
+            image,
+            0,
+            0,
+            1200,
+            1200
+        );
+
+
+        URL.revokeObjectURL(url);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.download =
+            "mockup-baju.png";
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+
+        link.click();
+
+    };
+
+
+    image.src = url;
+
+}
+
+
+/* ======================================================
+   DRAG ELEMENT
+====================================================== */
+
+let dragging = false;
+
+let dragOffsetX = 0;
+
+let dragOffsetY = 0;
+
+
+svg.addEventListener(
+"mousedown",
+function(e) {
+
+    if (!selectedElement)
+        return;
+
+
+    if (
+        e.target.id !==
+        selectedElement.id
+    )
+        return;
+
+
+    dragging = true;
+
+
+    const point =
+        getSVGPoint(e);
+
+
+    dragOffsetX =
+        selectedElement.x -
+        point.x;
+
+
+    dragOffsetY =
+        selectedElement.y -
+        point.y;
+
+});
+
+
+svg.addEventListener(
+"mousemove",
+function(e) {
+
+    if (!dragging)
+        return;
+
+
+    if (!selectedElement)
+        return;
+
+
+    const point =
+        getSVGPoint(e);
+
+
+    selectedElement.x =
+        point.x +
+        dragOffsetX;
+
+
+    selectedElement.y =
+        point.y +
+        dragOffsetY;
+
+
+    document
+        .getElementById(
+            "elementX"
+        )
+        .value =
+        selectedElement.x;
+
+
+    document
+        .getElementById(
+            "elementY"
+        )
+        .value =
+        selectedElement.y;
+
+
+    updateSelected();
+
+});
+
+
+svg.addEventListener(
+"mouseup",
+function() {
+
+    dragging = false;
+
+});
+
+
+svg.addEventListener(
+"mouseleave",
+function() {
+
+    dragging = false;
+
+});
+
+
+function getSVGPoint(event) {
+
+    const pt =
+        svg.createSVGPoint();
+
+
+    pt.x =
+        event.clientX;
+
+    pt.y =
+        event.clientY;
+
+
+    const matrix =
+        svg
+        .getScreenCTM()
+        .inverse();
+
+
+    return pt.matrixTransform(
+        matrix
+    );
+
+}
+
+
+/* ======================================================
+   INITIAL
+====================================================== */
+
+updateElementList();
+
+</script>
+
+</body>
+</html>
